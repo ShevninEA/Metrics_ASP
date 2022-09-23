@@ -2,7 +2,7 @@
 
 namespace MetricsAgent.Controllers
 {
-    [Route("api/metrics/hdd")]
+    [Route("api/metrics/hdd/left")]
     [ApiController]
     public class HddMetricsController : ControllerBase
     {

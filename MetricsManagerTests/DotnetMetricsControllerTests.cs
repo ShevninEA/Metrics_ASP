@@ -8,13 +8,13 @@ using System.Threading.Tasks;
 
 namespace MetricsManagerTests
 {
-    public class CpuMetricsControllerTests
+    public class DotnetMetricsControllerTests
     {
-        private CpuMetricsController _cpuMetricsController;
+        private DotNetMetricsController _dotnetMetricsController;
 
-        public CpuMetricsControllerTests()
+        public DotnetMetricsControllerTests()
         {
-            _cpuMetricsController = new CpuMetricsController();
+            _dotnetMetricsController = new DotNetMetricsController();
         }
 
         [Fact]
@@ -26,7 +26,7 @@ namespace MetricsManagerTests
             TimeSpan toTime = TimeSpan.FromSeconds(100);
 
             // Исполнение тестируемого метода
-            var result = _cpuMetricsController.GetMetricsFromAgent(agentId, fromTime, toTime);
+            var result = _dotnetMetricsController.GetMetricsFromAgent(agentId, fromTime, toTime);
 
             // Подготовка эталонного результата, проверка результата
             Assert.IsAssignableFrom<IActionResult>(result);
@@ -37,7 +37,7 @@ namespace MetricsManagerTests
         {
             TimeSpan fromTime = TimeSpan.FromSeconds(0);
             TimeSpan toTime = TimeSpan.FromSeconds(100);
-            var result = _cpuMetricsController.GetMetricsFromAll(fromTime, toTime);
+            var result = _dotnetMetricsController.GetMetricsFromAll(fromTime, toTime);
             Assert.IsAssignableFrom<IActionResult>(result);
         }
     }

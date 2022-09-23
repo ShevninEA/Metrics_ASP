@@ -17,7 +17,6 @@ namespace MetricsManagerTests
         {
             _agentPool = AgentPool.Instance;
             _agentsController = new AgentsController(_agentPool);
-
         }
 
         [Theory]

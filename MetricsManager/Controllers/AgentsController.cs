@@ -40,17 +40,10 @@ namespace MetricsManager.Controllers
             return Ok();
         }
 
-        // TODO: Домашнее задание [Пункт 1]
-        // Добавьте метод в контроллер агентов проекта, относящегося к менеджеру метрик, который
-        // позволяет получить список зарегистрированных в системе объектов.
-
-
         [HttpGet("get")]
         public IActionResult GetAllAgents()
         {
             return Ok(_agentPool.Get());
         }
-
-
     }
 }
