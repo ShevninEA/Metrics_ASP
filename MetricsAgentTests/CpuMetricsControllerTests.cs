@@ -28,6 +28,5 @@ namespace MetricsAgentTests
             var result = _cpuMetricsController.GetCpuMetrics(fromTime, toTime);
             Assert.IsAssignableFrom<IActionResult>(result);
         }
-
     }
 }

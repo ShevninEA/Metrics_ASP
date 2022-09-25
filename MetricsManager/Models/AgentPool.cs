@@ -14,7 +14,6 @@
             }
         }
 
-
         private Dictionary<int, AgentInfo> _values;
 
         public AgentPool()
@@ -30,7 +29,6 @@
 
         public AgentInfo[] Get()
         {
-
             return _values.Values.ToArray();
         }
 
@@ -39,6 +37,5 @@
             get { return _values; }
             set { _values = value; }
         }
-
     }
 }
