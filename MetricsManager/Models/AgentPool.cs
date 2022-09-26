@@ -23,8 +23,11 @@
 
         public void Add(AgentInfo value)
         {
-            if (!_values.ContainsKey(value.AgentId))
-                _values.Add(value.AgentId, value);
+            lock (_values)
+            {
+                if (!_values.ContainsKey(value.AgentId))
+                    _values.Add(value.AgentId, value);
+            }
         }
 
         public AgentInfo[] Get()

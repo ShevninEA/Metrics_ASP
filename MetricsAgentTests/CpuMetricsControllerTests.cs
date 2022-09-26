@@ -8,9 +8,6 @@ using System.Threading.Tasks;
 
 namespace MetricsAgentTests
 {
-    // TODO: Домашнее задание [Пункт 3]
-    //  Добавьте проект с тестами для агента сбора метрик. Напишите простые Unit-тесты на каждый
-    // метод отдельно взятого контроллера в обоих тестовых проектах.
     public class CpuMetricsControllerTests
     {
         private CpuMetricsController _cpuMetricsController;
