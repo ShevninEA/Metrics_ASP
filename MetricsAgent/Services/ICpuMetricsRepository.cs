@@ -2,8 +2,8 @@
 
 namespace MetricsAgent.Services
 {
-    public interface ICpuMetricsRepository : IRepository<CpuMetric>
+    public interface ICpuMetricsRepository : IRepository<CpuMetrics>
     {
-        IList<CpuMetric> GetByTimePeriod(TimeSpan timeFrom, TimeSpan timeTo);
+        IList<CpuMetrics> GetByTimePeriod(TimeSpan timeFrom, TimeSpan timeTo);
     }
 }

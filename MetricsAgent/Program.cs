@@ -41,6 +41,10 @@ namespace MetricsAgent
             // Add services to the container.
 
             builder.Services.AddScoped<ICpuMetricsRepository, CpuMetricsRepository>();
+            builder.Services.AddScoped<IRamMetricsRepository, RamMetricsRepository>();
+            builder.Services.AddScoped<IDotnetMetricsRepository, DotnetMetricsRepository>();
+            builder.Services.AddScoped<IHddMetricsRepository, HddMetricsRepository>();
+            builder.Services.AddScoped<INetworkMetricsRepository, NetworkMetricsRepository>();
 
             builder.Services.AddControllers();
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
@@ -87,12 +91,12 @@ namespace MetricsAgent
             using (var command = new SQLiteCommand(connection))
             {
                 //Задаём новый текст команды для выполнения
-                // Удаляем таблицу с метриками, если она есть в базе данных
-                command.CommandText = "DROP TABLE IF EXISTS cpumetrics";
+                //// Удаляем таблицу с метриками, если она есть в базе данных
+                //command.CommandText = "DROP TABLE IF EXISTS cpumetrics";
                 // Отправляем запрос в базу данных
-                command.ExecuteNonQuery();
+                //command.ExecuteNonQuery();
                 command.CommandText =
-                    @"CREATE TABLE cpumetrics(id INTEGER
+                    @"CREATE TABLE rammetrics(id INTEGER
                     PRIMARY KEY,
                     value INT, time INT)";
                 command.ExecuteNonQuery();

@@ -3,17 +3,17 @@ using System.Data.SQLite;
 
 namespace MetricsAgent.Services.Impl
 {
-    public class CpuMetricsRepository : ICpuMetricsRepository
+    public class HddMetricsRepository : IHddMetricsRepository
     {
         private const string ConnectionString = "Data Source=metrics.db;Version=3;Pooling=true;Max Pool Size=100;";
-        public void Create(CpuMetrics item)
+        public void Create(HddMetrics item)
         {
             using var connection = new SQLiteConnection(ConnectionString);
             connection.Open();
             // Создаём команду
             using var cmd = new SQLiteCommand(connection);
             // Прописываем в команду SQL-запрос на вставку данных
-            cmd.CommandText = "INSERT INTO cpumetrics(value, time) VALUES(@value, @time)";
+            cmd.CommandText = "INSERT INTO hddmetrics(value, time) VALUES(@value, @time)";
             // Добавляем параметры в запрос из нашего объекта
             cmd.Parameters.AddWithValue("@value", item.Value);
             // В таблице будем хранить время в секундах
@@ -30,27 +30,27 @@ namespace MetricsAgent.Services.Impl
             connection.Open();
             using var cmd = new SQLiteCommand(connection);
             // Прописываем в команду SQL-запрос на удаление данных
-            cmd.CommandText = "DELETE FROM cpumetrics WHERE id=@id";
+            cmd.CommandText = "DELETE FROM hddmetrics WHERE id=@id";
             cmd.Parameters.AddWithValue("@id", id);
             cmd.Prepare();
             cmd.ExecuteNonQuery();
         }
 
-        public IList<CpuMetrics> GetAll()
+        public IList<HddMetrics> GetAll()
         {
             using var connection = new SQLiteConnection(ConnectionString);
             connection.Open();
             using var cmd = new SQLiteCommand(connection);
             // Прописываем в команду SQL-запрос на получение всех данных из таблицы
-            cmd.CommandText = "SELECT * FROM cpumetrics";
-            var returnList = new List<CpuMetrics>();
+            cmd.CommandText = "SELECT * FROM hddmetrics";
+            var returnList = new List<HddMetrics>();
             using (SQLiteDataReader reader = cmd.ExecuteReader())
             {
                 // Пока есть что читать — читаем
                 while (reader.Read())
                 {
                     // Добавляем объект в список возврата
-                    returnList.Add(new CpuMetrics
+                    returnList.Add(new HddMetrics
                     {
                         Id = reader.GetInt32(0),
                         Value = reader.GetInt32(1),
@@ -61,19 +61,19 @@ namespace MetricsAgent.Services.Impl
             return returnList;
         }
 
-        public CpuMetrics GetById(int id)
+        public HddMetrics GetById(int id)
         {
             using var connection = new SQLiteConnection(ConnectionString);
             connection.Open();
             using var cmd = new SQLiteCommand(connection);
-            cmd.CommandText = "SELECT * FROM cpumetrics WHERE id=@id";
+            cmd.CommandText = "SELECT * FROM hddmetrics WHERE id=@id";
             using (SQLiteDataReader reader = cmd.ExecuteReader())
             {
                 // Если удалось что-то прочитать
                 if (reader.Read())
                 {
                     // возвращаем прочитанное
-                    return new CpuMetrics
+                    return new HddMetrics
                     {
                         Id = reader.GetInt32(0),
                         Value = reader.GetInt32(1),
@@ -94,23 +94,23 @@ namespace MetricsAgent.Services.Impl
         /// <param name="timeFrom">Время начала периода</param>
         /// <param name="timeTo">Время окончания периода</param>
         /// <returns></returns>
-        public IList<CpuMetrics> GetByTimePeriod(TimeSpan timeFrom, TimeSpan timeTo)
+        public IList<HddMetrics> GetByTimePeriod(TimeSpan timeFrom, TimeSpan timeTo)
         {
             using var connection = new SQLiteConnection(ConnectionString);
             connection.Open();
             using var cmd = new SQLiteCommand(connection);
             // Прописываем в команду SQL-запрос на получение всех данных за период из таблицы
-            cmd.CommandText = "SELECT * FROM cpumetrics where time >= @timeFrom and time <= @timeTo";
+            cmd.CommandText = "SELECT * FROM hddmetrics where time >= @timeFrom and time <= @timeTo";
             cmd.Parameters.AddWithValue("@timeFrom", timeFrom.TotalSeconds);
             cmd.Parameters.AddWithValue("@timeTo", timeTo.TotalSeconds);
-            var returnList = new List<CpuMetrics>();
+            var returnList = new List<HddMetrics>();
             using (SQLiteDataReader reader = cmd.ExecuteReader())
             {
                 // Пока есть что читать — читаем
                 while (reader.Read())
                 {
                     // Добавляем объект в список возврата
-                    returnList.Add(new CpuMetrics
+                    returnList.Add(new HddMetrics
                     {
                         Id = reader.GetInt32(0),
                         Value = reader.GetInt32(1),
@@ -121,13 +121,12 @@ namespace MetricsAgent.Services.Impl
             return returnList;
         }
 
-        public void Update(CpuMetrics item)
+        public void Update(HddMetrics item)
         {
             using var connection = new SQLiteConnection(ConnectionString);
-            connection.Open();
             using var cmd = new SQLiteCommand(connection);
             // Прописываем в команду SQL-запрос на обновление данных
-            cmd.CommandText = "UPDATE cpumetrics SET value = @value, time = @time WHERE id = @id; ";
+            cmd.CommandText = "UPDATE hddmetrics SET value = @value, time = @time WHERE id = @id; ";
             cmd.Parameters.AddWithValue("@id", item.Id);
             cmd.Parameters.AddWithValue("@value", item.Value);
             cmd.Parameters.AddWithValue("@time", item.Time);
