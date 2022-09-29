@@ -4,6 +4,7 @@ using MetricsAgent.Services;
 using MetricsAgent.Services.Impl;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Moq;
 
 namespace MetricsAgent.Controllers
 {
@@ -13,7 +14,7 @@ namespace MetricsAgent.Controllers
     {
         private readonly ILogger<CpuMetricsController> _logger;
         private readonly ICpuMetricsRepository _cpuMetricsRepository;
-        
+
         public CpuMetricsController(ICpuMetricsRepository cpuMetricsRepository,
                     ILogger<CpuMetricsController> logger)
         {
@@ -21,6 +22,7 @@ namespace MetricsAgent.Controllers
             _logger = logger;
         }
 
+        
         [HttpPost("create")]
         public IActionResult Create([FromBody] CpuMetricCreateRequest request)
         {
@@ -55,11 +57,7 @@ namespace MetricsAgent.Controllers
             return Ok();
         }
 
-        /// <summary>
-        /// Почему-то не работает, не смог разобраться
-        /// </summary>
-        /// <param name="id"></param>
-        /// <returns></returns>
+        
         [HttpGet("getbyid/{id}")]
         public ActionResult<IList<CpuMetrics>> GetByIdCpuMetrics([FromRoute] int id)
         {
@@ -67,13 +65,8 @@ namespace MetricsAgent.Controllers
             return Ok(_cpuMetricsRepository.GetById(id));
         }
 
-        /// <summary>
-        /// Также почему-то не работает, не смог разобраться
-        /// </summary>
-        /// <param name="id"></param>
-        /// <returns></returns>
-        [HttpPut("update/{item}")]
-        public ActionResult<IList<CpuMetrics>> UpdateCpuMetrics([FromRoute] CpuMetrics item)
+        [HttpPut("update")]
+        public ActionResult<IList<CpuMetrics>> UpdateCpuMetrics([FromBody] CpuMetrics item)
         {
             _logger.LogInformation("Update cpu metrics.");
             _cpuMetricsRepository.Update(item);

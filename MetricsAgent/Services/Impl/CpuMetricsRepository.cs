@@ -67,6 +67,7 @@ namespace MetricsAgent.Services.Impl
             connection.Open();
             using var cmd = new SQLiteCommand(connection);
             cmd.CommandText = "SELECT * FROM cpumetrics WHERE id=@id";
+            cmd.Parameters.AddWithValue("@id", id);
             using (SQLiteDataReader reader = cmd.ExecuteReader())
             {
                 // Если удалось что-то прочитать
