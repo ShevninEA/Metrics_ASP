@@ -5,7 +5,7 @@ namespace MetricsManager.Controllers
 {
     [Route("api/dotnet")]
     [ApiController]
-    public class DotNetMetricsController : ControllerBase
+    public class DotnetMetricsController : ControllerBase
     {
         [HttpGet("agent/{agentId}/from/{fromTime}/to/{toTime}")]
         public IActionResult GetMetricsFromAgent(
