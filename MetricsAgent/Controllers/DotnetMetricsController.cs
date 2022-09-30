@@ -55,11 +55,6 @@ namespace MetricsAgent.Controllers
             return Ok();
         }
 
-        /// <summary>
-        /// Почему-то не работает, не смог разобраться
-        /// </summary>
-        /// <param name="id"></param>
-        /// <returns></returns>
         [HttpGet("getbyid/{id}")]
         public ActionResult<IList<DotnetMetrics>> GetByIdDotnetMetrics([FromRoute] int id)
         {
@@ -67,13 +62,8 @@ namespace MetricsAgent.Controllers
             return Ok(_dotnetMetricsRepository.GetById(id));
         }
 
-        /// <summary>
-        /// Также почему-то не работает, не смог разобраться
-        /// </summary>
-        /// <param name="id"></param>
-        /// <returns></returns>
-        [HttpPut("update/{item}")]
-        public ActionResult<IList<DotnetMetrics>> UpdateDotnetMetrics([FromRoute] DotnetMetrics item)
+        [HttpPut("update")]
+        public ActionResult<IList<DotnetMetrics>> UpdateDotnetMetrics([FromBody] DotnetMetrics item)
         {
             _logger.LogInformation("Update dotnet metrics.");
             _dotnetMetricsRepository.Update(item);

@@ -17,6 +17,15 @@ namespace MetricsAgent
 
             var builder = WebApplication.CreateBuilder(args);
 
+            #region Configure Odtions
+
+            builder.Services.Configure<DataBaseOptions>(options =>
+            {
+                builder.Configuration.GetSection("Settings:DataBaseOptions").Bind(options);
+            });
+
+            #endregion
+
             #region Configure logging
 
             builder.Host.ConfigureLogging(logging =>

@@ -54,11 +54,6 @@ namespace MetricsAgent.Controllers
             return Ok();
         }
 
-        /// <summary>
-        /// Почему-то не работает, не смог разобраться
-        /// </summary>
-        /// <param name="id"></param>
-        /// <returns></returns>
         [HttpGet("getbyid/{id}")]
         public ActionResult<IList<RamMetrics>> GetByIdRamMetrics([FromRoute] int id)
         {
@@ -66,13 +61,8 @@ namespace MetricsAgent.Controllers
             return Ok(_ramMetricsRepository.GetById(id));
         }
 
-        /// <summary>
-        /// Также почему-то не работает, не смог разобраться
-        /// </summary>
-        /// <param name="id"></param>
-        /// <returns></returns>
         [HttpPut("update/{item}")]
-        public ActionResult<IList<RamMetrics>> UpdateRamMetrics([FromRoute] RamMetrics item)
+        public ActionResult<IList<RamMetrics>> UpdateRamMetrics([FromBody] RamMetrics item)
         {
             _logger.LogInformation("Update ram metrics.");
             _ramMetricsRepository.Update(item);

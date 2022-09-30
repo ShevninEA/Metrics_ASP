@@ -53,11 +53,6 @@ namespace MetricsAgent.Controllers
             return Ok();
         }
 
-        /// <summary>
-        /// Почему-то не работает, не смог разобраться
-        /// </summary>
-        /// <param name="id"></param>
-        /// <returns></returns>
         [HttpGet("getbyid/{id}")]
         public ActionResult<IList<HddMetrics>> GetByIdHddMetrics([FromRoute] int id)
         {
@@ -65,13 +60,8 @@ namespace MetricsAgent.Controllers
             return Ok(_hddMetricsRepository.GetById(id));
         }
 
-        /// <summary>
-        /// Также почему-то не работает, не смог разобраться
-        /// </summary>
-        /// <param name="id"></param>
-        /// <returns></returns>
-        [HttpPut("update/{item}")]
-        public ActionResult<IList<HddMetrics>> UpdateHddMetrics([FromRoute] HddMetrics item)
+        [HttpPut("update")]
+        public ActionResult<IList<HddMetrics>> UpdateHddMetrics([FromBody] HddMetrics item)
         {
             _logger.LogInformation("Update hdd metrics.");
             _hddMetricsRepository.Update(item);
