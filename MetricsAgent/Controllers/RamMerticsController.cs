@@ -61,7 +61,7 @@ namespace MetricsAgent.Controllers
             return Ok(_ramMetricsRepository.GetById(id));
         }
 
-        [HttpPut("update/{item}")]
+        [HttpPut("update")]
         public ActionResult<IList<RamMetrics>> UpdateRamMetrics([FromBody] RamMetrics item)
         {
             _logger.LogInformation("Update ram metrics.");

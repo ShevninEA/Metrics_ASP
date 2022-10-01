@@ -61,7 +61,7 @@ namespace MetricsAgent.Controllers
             return Ok(_networkMetricsRepository.GetById(id));
         }
 
-        [HttpPut("update/{item}")]
+        [HttpPut("update")]
         public ActionResult<IList<NetworkMetrics>> UpdateNetworkMetrics([FromBody] NetworkMetrics item)
         {
             _logger.LogInformation("Update network metrics.");
