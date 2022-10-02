@@ -2,8 +2,8 @@
 
 namespace MetricsAgent.Services
 {
-    public interface IDotnetMetricsRepository : IRepository<DotnetMetrics>
+    public interface IDotnetMetricsRepository : IRepository<DotnetMetric>
     {
-        IList<DotnetMetrics> GetByTimePeriod(TimeSpan timeFrom, TimeSpan timeTo);
+        IList<DotnetMetric> GetByTimePeriod(TimeSpan timeFrom, TimeSpan timeTo);
     }
 }

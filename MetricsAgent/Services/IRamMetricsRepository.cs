@@ -2,8 +2,8 @@
 
 namespace MetricsAgent.Services
 {
-    public interface IRamMetricsRepository : IRepository<RamMetrics>
+    public interface IRamMetricsRepository : IRepository<RamMetric>
     {
-        IList<RamMetrics> GetByTimePeriod(TimeSpan timeFrom, TimeSpan timeTo);
+        IList<RamMetric> GetByTimePeriod(TimeSpan timeFrom, TimeSpan timeTo);
     }
 }

@@ -14,7 +14,7 @@ namespace MetricsAgent.Services.Impl
             _databaseOptions = databaseOptions;
         }
 
-        public void Create(NetworkMetrics item)
+        public void Create(NetworkMetric item)
         {
             using var connection = new SQLiteConnection(_databaseOptions.Value.ConnectionString);
 
@@ -30,31 +30,31 @@ namespace MetricsAgent.Services.Impl
                 new { id = id });
         }
 
-        public IList<NetworkMetrics> GetAll()
+        public IList<NetworkMetric> GetAll()
         {
             using var connection = new SQLiteConnection(_databaseOptions.Value.ConnectionString);
 
-            return connection.Query<NetworkMetrics>("SELECT Id, Time, Value FROM networkmetrics").ToList();
+            return connection.Query<NetworkMetric>("SELECT Id, Time, Value FROM networkmetrics").ToList();
         }
 
-        public NetworkMetrics GetById(int id)
+        public NetworkMetric GetById(int id)
         {
 
             using var connection = new SQLiteConnection(_databaseOptions.Value.ConnectionString);
 
-            return connection.QuerySingle<NetworkMetrics>("SELECT Id, Time, Value FROM hddmetrics WHERE id = @id",
+            return connection.QuerySingle<NetworkMetric>("SELECT Id, Time, Value FROM hddmetrics WHERE id = @id",
                 new { id = id });
         }
 
-        public IList<NetworkMetrics> GetByTimePeriod(TimeSpan timeFrom, TimeSpan timeTo)
+        public IList<NetworkMetric> GetByTimePeriod(TimeSpan timeFrom, TimeSpan timeTo)
         {
             using var connection = new SQLiteConnection(_databaseOptions.Value.ConnectionString);
 
-            return connection.Query<NetworkMetrics>("SELECT * FROM networkmetrics where time >= @timeFrom and time <= @timeTo",
+            return connection.Query<NetworkMetric>("SELECT * FROM networkmetrics where time >= @timeFrom and time <= @timeTo",
                 new { timeFrom = timeFrom.TotalSeconds, timeTo = timeTo.TotalSeconds }).ToList();
         }
 
-        public void Update(NetworkMetrics item)
+        public void Update(NetworkMetric item)
         {
             using var connection = new SQLiteConnection(_databaseOptions.Value.ConnectionString);
 

@@ -14,7 +14,7 @@ namespace MetricsAgent.Services.Impl
             _databaseOptions = databaseOptions;
         }
 
-        public void Create(HddMetrics item)
+        public void Create(HddMetric item)
         {
             using var connection = new SQLiteConnection(_databaseOptions.Value.ConnectionString);
 
@@ -30,30 +30,30 @@ namespace MetricsAgent.Services.Impl
                 new { id = id });
         }
 
-        public IList<HddMetrics> GetAll()
+        public IList<HddMetric> GetAll()
         {
             using var connection = new SQLiteConnection(_databaseOptions.Value.ConnectionString);
 
-            return connection.Query<HddMetrics>("SELECT Id, Time, Value FROM hddmetrics").ToList();
+            return connection.Query<HddMetric>("SELECT Id, Time, Value FROM hddmetrics").ToList();
         }
 
-        public HddMetrics GetById(int id)
+        public HddMetric GetById(int id)
         {
             using var connection = new SQLiteConnection(_databaseOptions.Value.ConnectionString);
 
-            return connection.QuerySingle<HddMetrics>("SELECT Id, Time, Value FROM hddmetrics WHERE id = @id",
+            return connection.QuerySingle<HddMetric>("SELECT Id, Time, Value FROM hddmetrics WHERE id = @id",
                 new { id = id });
         }
 
-        public IList<HddMetrics> GetByTimePeriod(TimeSpan timeFrom, TimeSpan timeTo)
+        public IList<HddMetric> GetByTimePeriod(TimeSpan timeFrom, TimeSpan timeTo)
         {
             using var connection = new SQLiteConnection(_databaseOptions.Value.ConnectionString);
 
-            return connection.Query<HddMetrics>("SELECT * FROM hddmetrics where time >= @timeFrom and time <= @timeTo",
+            return connection.Query<HddMetric>("SELECT * FROM hddmetrics where time >= @timeFrom and time <= @timeTo",
                 new { timeFrom = timeFrom.TotalSeconds, timeTo = timeTo.TotalSeconds }).ToList();
         }
 
-        public void Update(HddMetrics item)
+        public void Update(HddMetric item)
         {
             using var connection = new SQLiteConnection(_databaseOptions.Value.ConnectionString);
 

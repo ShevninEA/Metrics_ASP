@@ -14,7 +14,7 @@ namespace MetricsAgent.Services.Impl
             _databaseOptions = databaseOptions;
         }
 
-        public void Create(DotnetMetrics item)
+        public void Create(DotnetMetric item)
         {
             using var connection = new SQLiteConnection(_databaseOptions.Value.ConnectionString);
 
@@ -30,30 +30,30 @@ namespace MetricsAgent.Services.Impl
                 new { id = id });
         }
 
-        public IList<DotnetMetrics> GetAll()
+        public IList<DotnetMetric> GetAll()
         {
             using var connection = new SQLiteConnection(_databaseOptions.Value.ConnectionString);
 
-            return connection.Query<DotnetMetrics>("SELECT Id, Time, Value FROM dotnetmetrics").ToList();
+            return connection.Query<DotnetMetric>("SELECT Id, Time, Value FROM dotnetmetrics").ToList();
         }
 
-        public DotnetMetrics GetById(int id)
+        public DotnetMetric GetById(int id)
         {
             using var connection = new SQLiteConnection(_databaseOptions.Value.ConnectionString);
 
-            return connection.QuerySingle<DotnetMetrics>("SELECT Id, Time, Value FROM dotnetmetrics WHERE id=@id",
+            return connection.QuerySingle<DotnetMetric>("SELECT Id, Time, Value FROM dotnetmetrics WHERE id=@id",
                 new { id = id });
         }
 
-        public IList<DotnetMetrics> GetByTimePeriod(TimeSpan timeFrom, TimeSpan timeTo)
+        public IList<DotnetMetric> GetByTimePeriod(TimeSpan timeFrom, TimeSpan timeTo)
         {
             using var connection = new SQLiteConnection(_databaseOptions.Value.ConnectionString);
 
-            return connection.Query<DotnetMetrics>("SELECT * FROM dotnetmetrics where time >= @timeFrom and time <= @timeTo",
+            return connection.Query<DotnetMetric>("SELECT * FROM dotnetmetrics where time >= @timeFrom and time <= @timeTo",
                 new { timeFrom = timeFrom.TotalSeconds, timeTo = timeTo.TotalSeconds }).ToList();
         }
 
-        public void Update(DotnetMetrics item)
+        public void Update(DotnetMetric item)
         {
             using var connection = new SQLiteConnection(_databaseOptions.Value.ConnectionString);
 
