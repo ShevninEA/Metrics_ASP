@@ -35,14 +35,14 @@ namespace MetricsAgent.Controllers
         }
 
         [HttpGet("from/{fromTime}/to/{toTime}")]
-        public ActionResult<IList<NetworkMetric>> GetNetworkMetrics([FromRoute] TimeSpan fromTime, [FromRoute] TimeSpan toTime)
+        public ActionResult<IList<NetworkMetricDto>> GetNetworkMetrics([FromRoute] TimeSpan fromTime, [FromRoute] TimeSpan toTime)
         {
             _logger.LogInformation("Get network metrics call.");
             return Ok(_mapper.Map <List<NetworkMetricDto>>(_networkMetricsRepository.GetByTimePeriod(fromTime, toTime)));
         }
 
         [HttpGet("getall")]
-        public ActionResult<IList<NetworkMetric>> GetAllNetworkMetrics()
+        public ActionResult<IList<NetworkMetricDto>> GetAllNetworkMetrics()
         {
             _logger.LogInformation("Get all network metrics.");
             return Ok(_mapper.Map<List<NetworkMetricDto>>(_networkMetricsRepository.GetAll()));
@@ -50,7 +50,7 @@ namespace MetricsAgent.Controllers
 
         //Более не нужен
         [HttpDelete("delete/{id}")]
-        public ActionResult<IList<NetworkMetric>> DeleteNetworkMetrics([FromRoute] int id)
+        public ActionResult<IList<NetworkMetricDto>> DeleteNetworkMetrics([FromRoute] int id)
         {
             _logger.LogInformation("Delete network metrics.");
             _networkMetricsRepository.Delete(id);
@@ -59,7 +59,7 @@ namespace MetricsAgent.Controllers
 
         //Более не нужен
         [HttpGet("getbyid/{id}")]
-        public ActionResult<IList<NetworkMetric>> GetByIdNetworkMetrics([FromRoute] int id)
+        public ActionResult<IList<NetworkMetricDto>> GetByIdNetworkMetrics([FromRoute] int id)
         {
             _logger.LogInformation("Get by id network metrics.");
             return Ok(_networkMetricsRepository.GetById(id));
@@ -67,7 +67,7 @@ namespace MetricsAgent.Controllers
 
         //Более не нужен
         [HttpPut("update")]
-        public ActionResult<IList<NetworkMetric>> UpdateNetworkMetrics([FromBody] NetworkMetric item)
+        public ActionResult<IList<NetworkMetricDto>> UpdateNetworkMetrics([FromBody] NetworkMetric item)
         {
             _logger.LogInformation("Update network metrics.");
             _networkMetricsRepository.Update(item);

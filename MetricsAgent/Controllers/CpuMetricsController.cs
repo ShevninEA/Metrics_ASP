@@ -37,14 +37,14 @@ namespace MetricsAgent.Controllers
         }
 
         [HttpGet("from/{fromTime}/to/{toTime}")]
-        public ActionResult<IList<CpuMetric>> GetCpuMetrics([FromRoute] TimeSpan fromTime, [FromRoute] TimeSpan toTime)
+        public ActionResult<IList<CpuMetricDto>> GetCpuMetrics([FromRoute] TimeSpan fromTime, [FromRoute] TimeSpan toTime)
         {
             _logger.LogInformation("Get cpu metrics call.");
             return Ok(_mapper.Map<List<CpuMetricDto>>(_cpuMetricsRepository.GetByTimePeriod(fromTime, toTime)));
         }
 
         [HttpGet("getall")]
-        public ActionResult<IList<CpuMetric>> GetAllCpuMetrics()
+        public ActionResult<IList<CpuMetricDto>> GetAllCpuMetrics()
         {
             _logger.LogInformation("Get all cpu metrics.");
             return Ok(_mapper.Map<List<CpuMetricDto>>(_cpuMetricsRepository.GetAll()));
@@ -52,7 +52,7 @@ namespace MetricsAgent.Controllers
 
         //Более не нужен
         [HttpDelete("delete/{id}")]
-        public ActionResult<IList<CpuMetric>> DeleteCpuMetrics([FromRoute] int id)
+        public ActionResult<IList<CpuMetricDto>> DeleteCpuMetrics([FromRoute] int id)
         {
             _logger.LogInformation("Delete cpu metrics.");
             _cpuMetricsRepository.Delete(id);
@@ -61,7 +61,7 @@ namespace MetricsAgent.Controllers
 
         //Более не нужен
         [HttpGet("getbyid/{id}")]
-        public ActionResult<IList<CpuMetric>> GetByIdCpuMetrics([FromRoute] int id)
+        public ActionResult<IList<CpuMetricDto>> GetByIdCpuMetrics([FromRoute] int id)
         {
             _logger.LogInformation("Get by id cpu metrics.");
             return Ok(_cpuMetricsRepository.GetById(id));
@@ -69,7 +69,7 @@ namespace MetricsAgent.Controllers
 
         //Более не нужен
         [HttpPut("update")]
-        public ActionResult<IList<CpuMetric>> UpdateCpuMetrics([FromBody] CpuMetric item)
+        public ActionResult<IList<CpuMetricDto>> UpdateCpuMetrics([FromBody] CpuMetric item)
         {
             _logger.LogInformation("Update cpu metrics.");
             _cpuMetricsRepository.Update(item);

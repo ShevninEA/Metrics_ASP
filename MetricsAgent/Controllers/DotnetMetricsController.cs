@@ -35,14 +35,14 @@ namespace MetricsAgent.Controllers
         }
 
         [HttpGet("from/{fromTime}/to/{toTime}")]
-        public ActionResult<IList<DotnetMetric>> GetDotnetMetrics([FromRoute] TimeSpan fromTime, [FromRoute] TimeSpan toTime)
+        public ActionResult<IList<DotnetMetricDto>> GetDotnetMetrics([FromRoute] TimeSpan fromTime, [FromRoute] TimeSpan toTime)
         {
             _logger.LogInformation("Get dotnet metrics call.");
             return Ok(_mapper.Map<List<DotnetMetricDto>>(_dotnetMetricsRepository.GetByTimePeriod(fromTime, toTime)));
         }
 
         [HttpGet("getall")]
-        public ActionResult<IList<DotnetMetric>> GetAllDotnetMetrics()
+        public ActionResult<IList<DotnetMetricDto>> GetAllDotnetMetrics()
         {
             _logger.LogInformation("Get all dotnet metrics.");
             return Ok(_mapper.Map<List<DotnetMetricDto>>(_dotnetMetricsRepository.GetAll()));
@@ -50,7 +50,7 @@ namespace MetricsAgent.Controllers
 
         //Более не нужен
         [HttpDelete("delete/{id}")]
-        public ActionResult<IList<DotnetMetric>> DeleteDotnetMetrics([FromRoute] int id)
+        public ActionResult<IList<DotnetMetricDto>> DeleteDotnetMetrics([FromRoute] int id)
         {
             _logger.LogInformation("Delete dotnet metrics.");
             _dotnetMetricsRepository.Delete(id);
@@ -59,7 +59,7 @@ namespace MetricsAgent.Controllers
 
         //Более не нужен
         [HttpGet("getbyid/{id}")]
-        public ActionResult<IList<DotnetMetric>> GetByIdDotnetMetrics([FromRoute] int id)
+        public ActionResult<IList<DotnetMetricDto>> GetByIdDotnetMetrics([FromRoute] int id)
         {
             _logger.LogInformation("Get by id dotnet metrics.");
             return Ok(_dotnetMetricsRepository.GetById(id));
@@ -67,7 +67,7 @@ namespace MetricsAgent.Controllers
 
         //Более не нужен
         [HttpPut("update")]
-        public ActionResult<IList<DotnetMetric>> UpdateDotnetMetrics([FromBody] DotnetMetric item)
+        public ActionResult<IList<DotnetMetricDto>> UpdateDotnetMetrics([FromBody] DotnetMetric item)
         {
             _logger.LogInformation("Update dotnet metrics.");
             _dotnetMetricsRepository.Update(item);

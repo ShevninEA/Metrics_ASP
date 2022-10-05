@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 using AutoMapper;
 using MetricsAgent.Services.Impl;
 using System.Collections.Generic;
+using MetricsAgent.Models.Dto;
 
 namespace MetricsAgent.Controllers
 {
@@ -34,22 +35,22 @@ namespace MetricsAgent.Controllers
         }
 
         [HttpGet("from/{fromTime}/to/{toTime}")]
-        public ActionResult<IList<RamMetric>> GetRamMetrics([FromRoute] TimeSpan fromTime, [FromRoute] TimeSpan toTime)
+        public ActionResult<IList<RamMetricDto>> GetRamMetrics([FromRoute] TimeSpan fromTime, [FromRoute] TimeSpan toTime)
         {
             _logger.LogInformation("Get ram metrics call.");
-            return Ok(_mapper.Map<List<RamMetric>>(_ramMetricsRepository.GetByTimePeriod(fromTime, toTime)));
+            return Ok(_mapper.Map<List<RamMetricDto>>(_ramMetricsRepository.GetByTimePeriod(fromTime, toTime)));
         }
 
         [HttpGet("getall")]
-        public ActionResult<IList<RamMetric>> GetAllRamMetrics()
+        public ActionResult<IList<RamMetricDto>> GetAllRamMetrics()
         {
             _logger.LogInformation("Get all ram metrics.");
-            return Ok(_mapper.Map<List<RamMetric>>(_ramMetricsRepository.GetAll()));
+            return Ok(_mapper.Map<List<RamMetricDto>>(_ramMetricsRepository.GetAll()));
         }
 
         //Более не нужен
         [HttpDelete("delete/{id}")]
-        public ActionResult<IList<RamMetric>> DeleteRamMetrics([FromRoute] int id)
+        public ActionResult<IList<RamMetricDto>> DeleteRamMetrics([FromRoute] int id)
         {
             _logger.LogInformation("Delete ram metrics.");
             _ramMetricsRepository.Delete(id);
@@ -58,7 +59,7 @@ namespace MetricsAgent.Controllers
 
         //Более не нужен
         [HttpGet("getbyid/{id}")]
-        public ActionResult<IList<RamMetric>> GetByIdRamMetrics([FromRoute] int id)
+        public ActionResult<IList<RamMetricDto>> GetByIdRamMetrics([FromRoute] int id)
         {
             _logger.LogInformation("Get by id ram metrics.");
             return Ok(_ramMetricsRepository.GetById(id));
@@ -66,7 +67,7 @@ namespace MetricsAgent.Controllers
 
         //Более не нужен
         [HttpPut("update")]
-        public ActionResult<IList<RamMetric>> UpdateRamMetrics([FromBody] RamMetric item)
+        public ActionResult<IList<RamMetricDto>> UpdateRamMetrics([FromBody] RamMetric item)
         {
             _logger.LogInformation("Update ram metrics.");
             _ramMetricsRepository.Update(item);

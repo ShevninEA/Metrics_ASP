@@ -1,4 +1,5 @@
 using AutoMapper;
+using FluentMigrator.Runner;
 using MetricsAgent.Mapping;
 using MetricsAgent.Models;
 using MetricsAgent.Services;
@@ -19,7 +20,7 @@ namespace MetricsAgent
 
             var builder = WebApplication.CreateBuilder(args);
 
-            #region Configure Odtions
+            #region Configure Options
 
             builder.Services.Configure<DataBaseOptions>(options =>
             {
@@ -38,6 +39,18 @@ namespace MetricsAgent
 
             #endregion
 
+            #region Configure Database
+
+            //ConfigureSqlLiteConnection(builder);
+
+            builder.Services.AddFluentMigratorCore()
+                .ConfigureRunner(rb =>
+                rb.AddSQLite()
+                .WithGlobalConnectionString(builder.Configuration["Settings:DatabaseOptions:ConnectionString"].ToString())
+                .ScanIn(typeof(Program).Assembly).For.Migrations()
+                ).AddLogging(lb => lb.AddFluentMigratorConsole());
+
+            #endregion
 
             #region Configure logging
 
@@ -97,32 +110,40 @@ namespace MetricsAgent
 
             app.MapControllers();
 
+            var serviceScopeFactory = app.Services.GetRequiredService<IServiceScopeFactory>();
+            using (IServiceScope serviceScope = serviceScopeFactory.CreateScope())
+            {
+                var migrationRunner = serviceScope.ServiceProvider.GetRequiredService<IMigrationRunner>();
+                migrationRunner.MigrateUp();
+
+            }
+
             app.Run();
         }
 
-        private static void ConfigureSqlLiteConnection()
-        {
-            const string connectionString = "Data Source = metrics.db; Version = 3; Pooling = true; Max Pool Size = 100;";
-            var connection = new SQLiteConnection(connectionString);
-            connection.Open();
-            PrepareSchema(connection);
-        }
+        //private static void ConfigureSqlLiteConnection()
+        //{
+        //    const string connectionString = "Data Source = metrics.db; Version = 3; Pooling = true; Max Pool Size = 100;";
+        //    var connection = new SQLiteConnection(connectionString);
+        //    connection.Open();
+        //    PrepareSchema(connection);
+        //}
 
-        private static void PrepareSchema(SQLiteConnection connection)
-        {
-            using (var command = new SQLiteCommand(connection))
-            {
-                //Задаём новый текст команды для выполнения
-                //// Удаляем таблицу с метриками, если она есть в базе данных
-                //command.CommandText = "DROP TABLE IF EXISTS cpumetrics";
-                // Отправляем запрос в базу данных
-                //command.ExecuteNonQuery();
-                command.CommandText =
-                    @"CREATE TABLE rammetrics(id INTEGER
-                    PRIMARY KEY,
-                    value INT, time INT)";
-                command.ExecuteNonQuery();
-            }
-        }
+        //private static void PrepareSchema(SQLiteConnection connection)
+        //{
+        //    using (var command = new SQLiteCommand(connection))
+        //    {
+        //        //Задаём новый текст команды для выполнения
+        //        //// Удаляем таблицу с метриками, если она есть в базе данных
+        //        //command.CommandText = "DROP TABLE IF EXISTS cpumetrics";
+        //        // Отправляем запрос в базу данных
+        //        //command.ExecuteNonQuery();
+        //        command.CommandText =
+        //            @"CREATE TABLE rammetrics(id INTEGER
+        //            PRIMARY KEY,
+        //            value INT, time INT)";
+        //        command.ExecuteNonQuery();
+        //    }
+        //}
     }
 }

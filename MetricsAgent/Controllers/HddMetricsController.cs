@@ -33,14 +33,14 @@ namespace MetricsAgent.Controllers
         }
 
         [HttpGet("from/{fromTime}/to/{toTime}")]
-        public ActionResult<IList<HddMetric>> GetHddMetrics([FromRoute] TimeSpan fromTime, [FromRoute] TimeSpan toTime)
+        public ActionResult<IList<HddMetricDto>> GetHddMetrics([FromRoute] TimeSpan fromTime, [FromRoute] TimeSpan toTime)
         {
             _logger.LogInformation("Get hdd metrics call.");
             return Ok(_mapper.Map<List<HddMetricDto>>(_hddMetricsRepository.GetByTimePeriod(fromTime, toTime)));
         }
 
         [HttpGet("getall")]
-        public ActionResult<IList<HddMetric>> GetAllHddMetrics()
+        public ActionResult<IList<HddMetricDto>> GetAllHddMetrics()
         {
             _logger.LogInformation("Get all hdd metrics.");
             return Ok(_mapper.Map<List<HddMetricDto>>(_hddMetricsRepository.GetAll()));
@@ -48,7 +48,7 @@ namespace MetricsAgent.Controllers
 
         //Более не нужен
         [HttpDelete("delete/{id}")]
-        public ActionResult<IList<HddMetric>> DeleteHddMetrics([FromRoute] int id)
+        public ActionResult<IList<HddMetricDto>> DeleteHddMetrics([FromRoute] int id)
         {
             _logger.LogInformation("Delete hdd metrics.");
             _hddMetricsRepository.Delete(id);
@@ -57,7 +57,7 @@ namespace MetricsAgent.Controllers
 
         //Более не нужен
         [HttpGet("getbyid/{id}")]
-        public ActionResult<IList<HddMetric>> GetByIdHddMetrics([FromRoute] int id)
+        public ActionResult<IList<HddMetricDto>> GetByIdHddMetrics([FromRoute] int id)
         {
             _logger.LogInformation("Get by id hdd metrics.");
             return Ok(_hddMetricsRepository.GetById(id));
@@ -65,7 +65,7 @@ namespace MetricsAgent.Controllers
 
         //Более не нужен
         [HttpPut("update")]
-        public ActionResult<IList<HddMetric>> UpdateHddMetrics([FromBody] HddMetric item)
+        public ActionResult<IList<HddMetricDto>> UpdateHddMetrics([FromBody] HddMetric item)
         {
             _logger.LogInformation("Update hdd metrics.");
             _hddMetricsRepository.Update(item);
