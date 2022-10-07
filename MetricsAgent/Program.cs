@@ -1,5 +1,7 @@
 using AutoMapper;
 using FluentMigrator.Runner;
+using MetricsAgent.Job;
+using MetricsAgent.Jobs;
 using MetricsAgent.Mapping;
 using MetricsAgent.Models;
 using MetricsAgent.Services;
@@ -8,6 +10,9 @@ using Microsoft.AspNetCore.HttpLogging;
 using Microsoft.OpenApi.Any;
 using Microsoft.OpenApi.Models;
 using NLog.Web;
+using Quartz;
+using Quartz.Impl;
+using Quartz.Spi;
 using System.Data.SQLite;
 
 namespace MetricsAgent
@@ -52,6 +57,20 @@ namespace MetricsAgent
 
             #endregion
 
+            #region Quartz
+
+            builder.Services.AddSingleton<ISchedulerFactory, StdSchedulerFactory>();
+            builder.Services.AddSingleton<IJobFactory, SingletonJobFactory>();
+
+            builder.Services.AddSingleton<CpuMetricJob>();
+            builder.Services.AddSingleton(new JobSchedule(typeof (CpuMetricJob),
+                "0/5 * * ? * * *"));
+
+            builder.Services.AddHostedService<QuartzHostedService>();
+
+
+            #endregion
+
             #region Configure logging
 
             builder.Host.ConfigureLogging(logging =>
@@ -75,7 +94,7 @@ namespace MetricsAgent
 
             // Add services to the container.
 
-            builder.Services.AddScoped<ICpuMetricsRepository, CpuMetricsRepository>();
+            builder.Services.AddSingleton<ICpuMetricsRepository, CpuMetricsRepository>();
             builder.Services.AddScoped<IRamMetricsRepository, RamMetricsRepository>();
             builder.Services.AddScoped<IDotnetMetricsRepository, DotnetMetricsRepository>();
             builder.Services.AddScoped<IHddMetricsRepository, HddMetricsRepository>();
@@ -115,7 +134,6 @@ namespace MetricsAgent
             {
                 var migrationRunner = serviceScope.ServiceProvider.GetRequiredService<IMigrationRunner>();
                 migrationRunner.MigrateUp();
-
             }
 
             app.Run();

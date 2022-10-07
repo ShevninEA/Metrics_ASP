@@ -27,14 +27,14 @@ namespace MetricsAgent.Controllers
             _mapper = mapper; 
         }
 
-        
-        [HttpPost("create")]
-        public IActionResult Create([FromBody] CpuMetricCreateRequest request)
-        {
-            _logger.LogInformation("Create cpu metric.");
-            _cpuMetricsRepository.Create(_mapper.Map<CpuMetric>(request));
-            return Ok();
-        }
+        ////Более не нужен
+        //[HttpPost("create")]
+        //public IActionResult Create([FromBody] CpuMetricCreateRequest request)
+        //{
+        //    _logger.LogInformation("Create cpu metric.");
+        //    _cpuMetricsRepository.Create(_mapper.Map<CpuMetric>(request));
+        //    return Ok();
+        //}
 
         [HttpGet("from/{fromTime}/to/{toTime}")]
         public ActionResult<IList<CpuMetricDto>> GetCpuMetrics([FromRoute] TimeSpan fromTime, [FromRoute] TimeSpan toTime)
@@ -50,30 +50,30 @@ namespace MetricsAgent.Controllers
             return Ok(_mapper.Map<List<CpuMetricDto>>(_cpuMetricsRepository.GetAll()));
         }
 
-        //Более не нужен
-        [HttpDelete("delete/{id}")]
-        public ActionResult<IList<CpuMetricDto>> DeleteCpuMetrics([FromRoute] int id)
-        {
-            _logger.LogInformation("Delete cpu metrics.");
-            _cpuMetricsRepository.Delete(id);
-            return Ok();
-        }
+        ////Более не нужен
+        //[HttpDelete("delete/{id}")]
+        //public ActionResult<IList<CpuMetricDto>> DeleteCpuMetrics([FromRoute] int id)
+        //{
+        //    _logger.LogInformation("Delete cpu metrics.");
+        //    _cpuMetricsRepository.Delete(id);
+        //    return Ok();
+        //}
 
-        //Более не нужен
-        [HttpGet("getbyid/{id}")]
-        public ActionResult<IList<CpuMetricDto>> GetByIdCpuMetrics([FromRoute] int id)
-        {
-            _logger.LogInformation("Get by id cpu metrics.");
-            return Ok(_cpuMetricsRepository.GetById(id));
-        }
+        ////Более не нужен
+        //[HttpGet("getbyid/{id}")]
+        //public ActionResult<IList<CpuMetricDto>> GetByIdCpuMetrics([FromRoute] int id)
+        //{
+        //    _logger.LogInformation("Get by id cpu metrics.");
+        //    return Ok(_cpuMetricsRepository.GetById(id));
+        //}
 
-        //Более не нужен
-        [HttpPut("update")]
-        public ActionResult<IList<CpuMetricDto>> UpdateCpuMetrics([FromBody] CpuMetric item)
-        {
-            _logger.LogInformation("Update cpu metrics.");
-            _cpuMetricsRepository.Update(item);
-            return Ok();
-        }
+        ////Более не нужен
+        //[HttpPut("update")]
+        //public ActionResult<IList<CpuMetricDto>> UpdateCpuMetrics([FromBody] CpuMetric item)
+        //{
+        //    _logger.LogInformation("Update cpu metrics.");
+        //    _cpuMetricsRepository.Update(item);
+        //    return Ok();
+        //}
     }
 }
