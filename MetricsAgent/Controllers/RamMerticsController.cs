@@ -26,13 +26,14 @@ namespace MetricsAgent.Controllers
             _mapper = mapper;
         }
 
-        [HttpPost("create")]
-        public IActionResult Create([FromBody] RamMetricCreateRequest request)
-        {
-            _logger.LogInformation("Create ram metric.");
-            _ramMetricsRepository.Create(_mapper.Map<RamMetric>(request));
-            return Ok();
-        }
+        ////Более не нужен
+        //[HttpPost("create")]
+        //public IActionResult Create([FromBody] RamMetricCreateRequest request)
+        //{
+        //    _logger.LogInformation("Create ram metric.");
+        //    _ramMetricsRepository.Create(_mapper.Map<RamMetric>(request));
+        //    return Ok();
+        //}
 
         [HttpGet("from/{fromTime}/to/{toTime}")]
         public ActionResult<IList<RamMetricDto>> GetRamMetrics([FromRoute] TimeSpan fromTime, [FromRoute] TimeSpan toTime)
@@ -48,30 +49,30 @@ namespace MetricsAgent.Controllers
             return Ok(_mapper.Map<List<RamMetricDto>>(_ramMetricsRepository.GetAll()));
         }
 
-        //Более не нужен
-        [HttpDelete("delete/{id}")]
-        public ActionResult<IList<RamMetricDto>> DeleteRamMetrics([FromRoute] int id)
-        {
-            _logger.LogInformation("Delete ram metrics.");
-            _ramMetricsRepository.Delete(id);
-            return Ok();
-        }
+        ////Более не нужен
+        //[HttpDelete("delete/{id}")]
+        //public ActionResult<IList<RamMetricDto>> DeleteRamMetrics([FromRoute] int id)
+        //{
+        //    _logger.LogInformation("Delete ram metrics.");
+        //    _ramMetricsRepository.Delete(id);
+        //    return Ok();
+        //}
 
-        //Более не нужен
-        [HttpGet("getbyid/{id}")]
-        public ActionResult<IList<RamMetricDto>> GetByIdRamMetrics([FromRoute] int id)
-        {
-            _logger.LogInformation("Get by id ram metrics.");
-            return Ok(_ramMetricsRepository.GetById(id));
-        }
+        ////Более не нужен
+        //[HttpGet("getbyid/{id}")]
+        //public ActionResult<IList<RamMetricDto>> GetByIdRamMetrics([FromRoute] int id)
+        //{
+        //    _logger.LogInformation("Get by id ram metrics.");
+        //    return Ok(_ramMetricsRepository.GetById(id));
+        //}
 
-        //Более не нужен
-        [HttpPut("update")]
-        public ActionResult<IList<RamMetricDto>> UpdateRamMetrics([FromBody] RamMetric item)
-        {
-            _logger.LogInformation("Update ram metrics.");
-            _ramMetricsRepository.Update(item);
-            return Ok();
-        }
+        ////Более не нужен
+        //[HttpPut("update")]
+        //public ActionResult<IList<RamMetricDto>> UpdateRamMetrics([FromBody] RamMetric item)
+        //{
+        //    _logger.LogInformation("Update ram metrics.");
+        //    _ramMetricsRepository.Update(item);
+        //    return Ok();
+        //}
     }
 }

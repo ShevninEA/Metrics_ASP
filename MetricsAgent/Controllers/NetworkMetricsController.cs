@@ -26,13 +26,14 @@ namespace MetricsAgent.Controllers
             _mapper = mapper;
         }
 
-        [HttpPost("create")]
-        public IActionResult Create([FromBody] NetworkMetricCreateRequest request)
-        {
-            _logger.LogInformation("Create network metric.");
-            _networkMetricsRepository.Create(_mapper.Map<NetworkMetric>(request));
-            return Ok();
-        }
+        ////Более не нужен
+        //[HttpPost("create")]
+        //public IActionResult Create([FromBody] NetworkMetricCreateRequest request)
+        //{
+        //    _logger.LogInformation("Create network metric.");
+        //    _networkMetricsRepository.Create(_mapper.Map<NetworkMetric>(request));
+        //    return Ok();
+        //}
 
         [HttpGet("from/{fromTime}/to/{toTime}")]
         public ActionResult<IList<NetworkMetricDto>> GetNetworkMetrics([FromRoute] TimeSpan fromTime, [FromRoute] TimeSpan toTime)
@@ -48,31 +49,31 @@ namespace MetricsAgent.Controllers
             return Ok(_mapper.Map<List<NetworkMetricDto>>(_networkMetricsRepository.GetAll()));
         }
 
-        //Более не нужен
-        [HttpDelete("delete/{id}")]
-        public ActionResult<IList<NetworkMetricDto>> DeleteNetworkMetrics([FromRoute] int id)
-        {
-            _logger.LogInformation("Delete network metrics.");
-            _networkMetricsRepository.Delete(id);
-            return Ok();
-        }
+        ////Более не нужен
+        //[HttpDelete("delete/{id}")]
+        //public ActionResult<IList<NetworkMetricDto>> DeleteNetworkMetrics([FromRoute] int id)
+        //{
+        //    _logger.LogInformation("Delete network metrics.");
+        //    _networkMetricsRepository.Delete(id);
+        //    return Ok();
+        //}
 
-        //Более не нужен
-        [HttpGet("getbyid/{id}")]
-        public ActionResult<IList<NetworkMetricDto>> GetByIdNetworkMetrics([FromRoute] int id)
-        {
-            _logger.LogInformation("Get by id network metrics.");
-            return Ok(_networkMetricsRepository.GetById(id));
-        }
+        ////Более не нужен
+        //[HttpGet("getbyid/{id}")]
+        //public ActionResult<IList<NetworkMetricDto>> GetByIdNetworkMetrics([FromRoute] int id)
+        //{
+        //    _logger.LogInformation("Get by id network metrics.");
+        //    return Ok(_networkMetricsRepository.GetById(id));
+        //}
 
-        //Более не нужен
-        [HttpPut("update")]
-        public ActionResult<IList<NetworkMetricDto>> UpdateNetworkMetrics([FromBody] NetworkMetric item)
-        {
-            _logger.LogInformation("Update network metrics.");
-            _networkMetricsRepository.Update(item);
-            return Ok();
-        }
+        ////Более не нужен
+        //[HttpPut("update")]
+        //public ActionResult<IList<NetworkMetricDto>> UpdateNetworkMetrics([FromBody] NetworkMetric item)
+        //{
+        //    _logger.LogInformation("Update network metrics.");
+        //    _networkMetricsRepository.Update(item);
+        //    return Ok();
+        //}
     }
 }
 

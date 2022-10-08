@@ -66,8 +66,23 @@ namespace MetricsAgent
             builder.Services.AddSingleton(new JobSchedule(typeof (CpuMetricJob),
                 "0/5 * * ? * * *"));
 
-            builder.Services.AddHostedService<QuartzHostedService>();
+            builder.Services.AddSingleton<DotnetMetricJob>();
+            builder.Services.AddSingleton(new JobSchedule(typeof(DotnetMetricJob),
+                "0/5 * * ? * * *"));
 
+            builder.Services.AddSingleton<HddMetricJob>();
+            builder.Services.AddSingleton(new JobSchedule(typeof(HddMetricJob),
+                "0/5 * * ? * * *"));
+
+            builder.Services.AddSingleton<NetworkMetricJob>();
+            builder.Services.AddSingleton(new JobSchedule(typeof(NetworkMetricJob),
+                "0/5 * * ? * * *"));
+
+            builder.Services.AddSingleton<RamMetricJob>();
+            builder.Services.AddSingleton(new JobSchedule(typeof(RamMetricJob),
+                "0/5 * * ? * * *"));
+
+            builder.Services.AddHostedService<QuartzHostedService>();
 
             #endregion
 

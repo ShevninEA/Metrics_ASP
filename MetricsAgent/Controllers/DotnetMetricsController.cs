@@ -26,13 +26,14 @@ namespace MetricsAgent.Controllers
             _mapper = mapper;
         }
 
-        [HttpPost("create")]
-        public IActionResult Create([FromBody] DotnetMetricCreateRequest request)
-        {
-            _logger.LogInformation("Create dotnet metric.");
-            _dotnetMetricsRepository.Create(_mapper.Map<DotnetMetric>(request));
-            return Ok();
-        }
+        ////Более не нужен
+        //[HttpPost("create")]
+        //public IActionResult Create([FromBody] DotnetMetricCreateRequest request)
+        //{
+        //    _logger.LogInformation("Create dotnet metric.");
+        //    _dotnetMetricsRepository.Create(_mapper.Map<DotnetMetric>(request));
+        //    return Ok();
+        //}
 
         [HttpGet("from/{fromTime}/to/{toTime}")]
         public ActionResult<IList<DotnetMetricDto>> GetDotnetMetrics([FromRoute] TimeSpan fromTime, [FromRoute] TimeSpan toTime)
@@ -48,30 +49,30 @@ namespace MetricsAgent.Controllers
             return Ok(_mapper.Map<List<DotnetMetricDto>>(_dotnetMetricsRepository.GetAll()));
         }
 
-        //Более не нужен
-        [HttpDelete("delete/{id}")]
-        public ActionResult<IList<DotnetMetricDto>> DeleteDotnetMetrics([FromRoute] int id)
-        {
-            _logger.LogInformation("Delete dotnet metrics.");
-            _dotnetMetricsRepository.Delete(id);
-            return Ok();
-        }
+        ////Более не нужен
+        //[HttpDelete("delete/{id}")]
+        //public ActionResult<IList<DotnetMetricDto>> DeleteDotnetMetrics([FromRoute] int id)
+        //{
+        //    _logger.LogInformation("Delete dotnet metrics.");
+        //    _dotnetMetricsRepository.Delete(id);
+        //    return Ok();
+        //}
 
-        //Более не нужен
-        [HttpGet("getbyid/{id}")]
-        public ActionResult<IList<DotnetMetricDto>> GetByIdDotnetMetrics([FromRoute] int id)
-        {
-            _logger.LogInformation("Get by id dotnet metrics.");
-            return Ok(_dotnetMetricsRepository.GetById(id));
-        }
+        ////Более не нужен
+        //[HttpGet("getbyid/{id}")]
+        //public ActionResult<IList<DotnetMetricDto>> GetByIdDotnetMetrics([FromRoute] int id)
+        //{
+        //    _logger.LogInformation("Get by id dotnet metrics.");
+        //    return Ok(_dotnetMetricsRepository.GetById(id));
+        //}
 
-        //Более не нужен
-        [HttpPut("update")]
-        public ActionResult<IList<DotnetMetricDto>> UpdateDotnetMetrics([FromBody] DotnetMetric item)
-        {
-            _logger.LogInformation("Update dotnet metrics.");
-            _dotnetMetricsRepository.Update(item);
-            return Ok();
-        }
+        ////Более не нужен
+        //[HttpPut("update")]
+        //public ActionResult<IList<DotnetMetricDto>> UpdateDotnetMetrics([FromBody] DotnetMetric item)
+        //{
+        //    _logger.LogInformation("Update dotnet metrics.");
+        //    _dotnetMetricsRepository.Update(item);
+        //    return Ok();
+        //}
     }
 }
