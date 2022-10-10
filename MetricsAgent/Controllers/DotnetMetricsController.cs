@@ -4,6 +4,9 @@ using MetricsAgent.Services;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using MetricsAgent.Services.Impl;
+using AutoMapper;
+using MetricsAgent.Models.Dto;
+using System.Collections.Generic;
 
 namespace MetricsAgent.Controllers
 {
@@ -13,71 +16,63 @@ namespace MetricsAgent.Controllers
     {
         private readonly ILogger<DotNetMetricsController> _logger;
         private readonly IDotnetMetricsRepository _dotnetMetricsRepository;
+        private readonly IMapper _mapper;
 
         public DotNetMetricsController(IDotnetMetricsRepository dotnetMetricsRepository,
-                    ILogger<DotNetMetricsController> logger)
+                    ILogger<DotNetMetricsController> logger, IMapper mapper)
         {
             _dotnetMetricsRepository = dotnetMetricsRepository;
             _logger = logger;
+            _mapper = mapper;
         }
 
-        [HttpPost("create")]
-        public IActionResult Create([FromBody] DotnetMetricCreateRequest request)
-        {
-            _logger.LogInformation("Create dotnet metric.");
-            _dotnetMetricsRepository.Create(new Models.DotnetMetrics
-            {
-                Value = request.Value,
-                Time = (long)request.Time.TotalSeconds
-            });
-            return Ok();
-        }
+        ////Более не нужен
+        //[HttpPost("create")]
+        //public IActionResult Create([FromBody] DotnetMetricCreateRequest request)
+        //{
+        //    _logger.LogInformation("Create dotnet metric.");
+        //    _dotnetMetricsRepository.Create(_mapper.Map<DotnetMetric>(request));
+        //    return Ok();
+        //}
 
         [HttpGet("from/{fromTime}/to/{toTime}")]
-        public ActionResult<IList<DotnetMetrics>> GetDotnetMetrics([FromRoute] TimeSpan fromTime, [FromRoute] TimeSpan toTime)
+        public ActionResult<IList<DotnetMetricDto>> GetDotnetMetrics([FromRoute] TimeSpan fromTime, [FromRoute] TimeSpan toTime)
         {
             _logger.LogInformation("Get dotnet metrics call.");
-            return Ok(_dotnetMetricsRepository.GetByTimePeriod(fromTime, toTime));
+            return Ok(_mapper.Map<List<DotnetMetricDto>>(_dotnetMetricsRepository.GetByTimePeriod(fromTime, toTime)));
         }
 
         [HttpGet("getall")]
-        public ActionResult<IList<DotnetMetrics>> GetAllDotnetMetrics()
+        public ActionResult<IList<DotnetMetricDto>> GetAllDotnetMetrics()
         {
             _logger.LogInformation("Get all dotnet metrics.");
-            return Ok(_dotnetMetricsRepository.GetAll());
+            return Ok(_mapper.Map<List<DotnetMetricDto>>(_dotnetMetricsRepository.GetAll()));
         }
 
-        [HttpDelete("delete/{id}")]
-        public ActionResult<IList<DotnetMetrics>> DeleteDotnetMetrics([FromRoute] int id)
-        {
-            _logger.LogInformation("Delete dotnet metrics.");
-            _dotnetMetricsRepository.Delete(id);
-            return Ok();
-        }
+        ////Более не нужен
+        //[HttpDelete("delete/{id}")]
+        //public ActionResult<IList<DotnetMetricDto>> DeleteDotnetMetrics([FromRoute] int id)
+        //{
+        //    _logger.LogInformation("Delete dotnet metrics.");
+        //    _dotnetMetricsRepository.Delete(id);
+        //    return Ok();
+        //}
 
-        /// <summary>
-        /// Почему-то не работает, не смог разобраться
-        /// </summary>
-        /// <param name="id"></param>
-        /// <returns></returns>
-        [HttpGet("getbyid/{id}")]
-        public ActionResult<IList<DotnetMetrics>> GetByIdDotnetMetrics([FromRoute] int id)
-        {
-            _logger.LogInformation("Get by id dotnet metrics.");
-            return Ok(_dotnetMetricsRepository.GetById(id));
-        }
+        ////Более не нужен
+        //[HttpGet("getbyid/{id}")]
+        //public ActionResult<IList<DotnetMetricDto>> GetByIdDotnetMetrics([FromRoute] int id)
+        //{
+        //    _logger.LogInformation("Get by id dotnet metrics.");
+        //    return Ok(_dotnetMetricsRepository.GetById(id));
+        //}
 
-        /// <summary>
-        /// Также почему-то не работает, не смог разобраться
-        /// </summary>
-        /// <param name="id"></param>
-        /// <returns></returns>
-        [HttpPut("update/{item}")]
-        public ActionResult<IList<DotnetMetrics>> UpdateDotnetMetrics([FromRoute] DotnetMetrics item)
-        {
-            _logger.LogInformation("Update dotnet metrics.");
-            _dotnetMetricsRepository.Update(item);
-            return Ok();
-        }
+        ////Более не нужен
+        //[HttpPut("update")]
+        //public ActionResult<IList<DotnetMetricDto>> UpdateDotnetMetrics([FromBody] DotnetMetric item)
+        //{
+        //    _logger.LogInformation("Update dotnet metrics.");
+        //    _dotnetMetricsRepository.Update(item);
+        //    return Ok();
+        //}
     }
 }

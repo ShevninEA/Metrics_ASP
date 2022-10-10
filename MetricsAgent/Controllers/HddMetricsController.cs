@@ -2,6 +2,9 @@
 using MetricsAgent.Models;
 using MetricsAgent.Services;
 using Microsoft.AspNetCore.Mvc;
+using AutoMapper;
+using MetricsAgent.Models.Dto;
+using System.Collections.Generic;
 
 namespace MetricsAgent.Controllers
 {
@@ -11,71 +14,63 @@ namespace MetricsAgent.Controllers
     {
         private readonly ILogger<HddMetricsController> _logger;
         private readonly IHddMetricsRepository _hddMetricsRepository;
+        private readonly IMapper _mapper;
 
         public HddMetricsController(IHddMetricsRepository hddMetricsRepository,
-                    ILogger<HddMetricsController> logger)
+                    ILogger<HddMetricsController> logger, IMapper mapper)
         {
             _hddMetricsRepository = hddMetricsRepository;
             _logger = logger;
+            _mapper = mapper;
         }
 
-        [HttpPost("create")]
-        public IActionResult Create([FromBody] HddMetricCreateRequest request)
-        {
-            _logger.LogInformation("Create hdd metric.");
-            _hddMetricsRepository.Create(new Models.HddMetrics
-            {
-                Value = request.Value,
-                Time = (long)request.Time.TotalSeconds
-            });
-            return Ok();
-        }
+        ////Более не нужен
+        //[HttpPost("create")]
+        //public IActionResult Create([FromBody] HddMetricCreateRequest request)
+        //{
+        //    _logger.LogInformation("Create hdd metric.");
+        //    _hddMetricsRepository.Create(_mapper.Map<HddMetric>(request));
+        //    return Ok();
+        //}
 
         [HttpGet("from/{fromTime}/to/{toTime}")]
-        public ActionResult<IList<HddMetrics>> GetHddMetrics([FromRoute] TimeSpan fromTime, [FromRoute] TimeSpan toTime)
+        public ActionResult<IList<HddMetricDto>> GetHddMetrics([FromRoute] TimeSpan fromTime, [FromRoute] TimeSpan toTime)
         {
             _logger.LogInformation("Get hdd metrics call.");
-            return Ok(_hddMetricsRepository.GetByTimePeriod(fromTime, toTime));
+            return Ok(_mapper.Map<List<HddMetricDto>>(_hddMetricsRepository.GetByTimePeriod(fromTime, toTime)));
         }
 
         [HttpGet("getall")]
-        public ActionResult<IList<HddMetrics>> GetAllHddMetrics()
+        public ActionResult<IList<HddMetricDto>> GetAllHddMetrics()
         {
             _logger.LogInformation("Get all hdd metrics.");
-            return Ok(_hddMetricsRepository.GetAll());
+            return Ok(_mapper.Map<List<HddMetricDto>>(_hddMetricsRepository.GetAll()));
         }
 
-        [HttpDelete("delete/{id}")]
-        public ActionResult<IList<HddMetrics>> DeleteHddMetrics([FromRoute] int id)
-        {
-            _logger.LogInformation("Delete hdd metrics.");
-            _hddMetricsRepository.Delete(id);
-            return Ok();
-        }
+        ////Более не нужен
+        //[HttpDelete("delete/{id}")]
+        //public ActionResult<IList<HddMetricDto>> DeleteHddMetrics([FromRoute] int id)
+        //{
+        //    _logger.LogInformation("Delete hdd metrics.");
+        //    _hddMetricsRepository.Delete(id);
+        //    return Ok();
+        //}
 
-        /// <summary>
-        /// Почему-то не работает, не смог разобраться
-        /// </summary>
-        /// <param name="id"></param>
-        /// <returns></returns>
-        [HttpGet("getbyid/{id}")]
-        public ActionResult<IList<HddMetrics>> GetByIdHddMetrics([FromRoute] int id)
-        {
-            _logger.LogInformation("Get by id hdd metrics.");
-            return Ok(_hddMetricsRepository.GetById(id));
-        }
+        ////Более не нужен
+        //[HttpGet("getbyid/{id}")]
+        //public ActionResult<IList<HddMetricDto>> GetByIdHddMetrics([FromRoute] int id)
+        //{
+        //    _logger.LogInformation("Get by id hdd metrics.");
+        //    return Ok(_hddMetricsRepository.GetById(id));
+        //}
 
-        /// <summary>
-        /// Также почему-то не работает, не смог разобраться
-        /// </summary>
-        /// <param name="id"></param>
-        /// <returns></returns>
-        [HttpPut("update/{item}")]
-        public ActionResult<IList<HddMetrics>> UpdateHddMetrics([FromRoute] HddMetrics item)
-        {
-            _logger.LogInformation("Update hdd metrics.");
-            _hddMetricsRepository.Update(item);
-            return Ok();
-        }
+        ////Более не нужен
+        //[HttpPut("update")]
+        //public ActionResult<IList<HddMetricDto>> UpdateHddMetrics([FromBody] HddMetric item)
+        //{
+        //    _logger.LogInformation("Update hdd metrics.");
+        //    _hddMetricsRepository.Update(item);
+        //    return Ok();
+        //}
     }
 }

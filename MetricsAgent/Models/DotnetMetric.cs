@@ -1,6 +1,6 @@
 ﻿namespace MetricsAgent.Models
 {
-    public class HddMetrics
+    public class DotnetMetric
     {
         public int Id { get; set; }
         public int Value { get; set; }

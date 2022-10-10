@@ -26,13 +26,13 @@ namespace MetricsAgentTests
         public void GetCpuMetrics_ReturnOk()
         {
             mock.Setup(repository =>
-                repository.Create(It.IsAny<CpuMetrics>())).Verifiable(); TimeSpan toTime = TimeSpan.FromSeconds(100);
+                repository.Create(It.IsAny<CpuMetric>())).Verifiable(); TimeSpan toTime = TimeSpan.FromSeconds(100);
             var result = _controller.Create(new MetricsAgent.Models.Requests.CpuMetricCreateRequest
             {
                 Time = TimeSpan.FromSeconds(1),
                 Value = 50
             });
-            mock.Verify(repository => repository.Create(It.IsAny<CpuMetrics>()), Times.AtMostOnce());
+            mock.Verify(repository => repository.Create(It.IsAny<CpuMetric>()), Times.AtMostOnce());
         }
     }
 }

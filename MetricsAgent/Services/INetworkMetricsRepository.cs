@@ -2,8 +2,8 @@
 
 namespace MetricsAgent.Services
 {
-    public interface INetworkMetricsRepository : IRepository<NetworkMetrics>
+    public interface INetworkMetricsRepository : IRepository<NetworkMetric>
     {
-        IList<NetworkMetrics> GetByTimePeriod(TimeSpan timeFrom, TimeSpan timeTo);
+        IList<NetworkMetric> GetByTimePeriod(TimeSpan timeFrom, TimeSpan timeTo);
     }
 }

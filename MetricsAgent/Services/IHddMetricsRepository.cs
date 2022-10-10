@@ -2,8 +2,8 @@
 
 namespace MetricsAgent.Services
 {
-    public interface IHddMetricsRepository : IRepository<HddMetrics>
+    public interface IHddMetricsRepository : IRepository<HddMetric>
     {
-        IList<HddMetrics> GetByTimePeriod(TimeSpan timeFrom, TimeSpan timeTo);
+        IList<HddMetric> GetByTimePeriod(TimeSpan timeFrom, TimeSpan timeTo);
     }
 }
