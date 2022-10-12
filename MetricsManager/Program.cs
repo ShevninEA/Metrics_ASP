@@ -23,7 +23,7 @@ namespace MetricsManager
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen(c =>
             {
-                c.SwaggerDoc("v1", new OpenApiInfo { Title = "MetricsAgent", Version = "v1" });
+                c.SwaggerDoc("v1", new OpenApiInfo { Title = "MetricsManager", Version = "v1" });
 
                 // Поддержка TimeSpan
                 c.MapType<TimeSpan>(() => new OpenApiSchema
