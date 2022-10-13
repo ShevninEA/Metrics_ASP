@@ -1,6 +1,6 @@
 ﻿using MetricsAgent.Models.Dto;
 
-namespace MetricsAgent.Models.Requests
+namespace MetricsAgent.Models.Response
 {
     public class GetCpuMetricsResponse
     {

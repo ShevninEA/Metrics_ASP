@@ -1,12 +1,12 @@
 ﻿using System.Text.Json.Serialization;
 
-namespace MetricsManager.Models.Requests
+namespace MetricsManager.Models.Requests.Cpu
 {
-    public class CpuMetricsResponse
+    public class DotnetMetricsResponse
     {
         public int AgentId { get; set; }
 
         [JsonPropertyName("metrics")]
-        public CpuMetric[] Metrics { get; set; }
+        public DotnetMetric[] Metrics { get; set; }
     }
 }

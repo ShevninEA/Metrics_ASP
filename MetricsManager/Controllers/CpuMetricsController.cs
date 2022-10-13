@@ -1,7 +1,6 @@
 ﻿using MetricsManager.Models;
-using MetricsManager.Models.Requests;
+using MetricsManager.Models.Requests.Cpu;
 using MetricsManager.Services.Client;
-using MetricsManager.Services.Client.Impl;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
@@ -16,12 +15,12 @@ namespace MetricsManager.Controllers
 
         private IHttpClientFactory _httpClientFactory;
         private AgentPool _agentPool;
-        private MetricsAgentClient _metricsAgentClient;
+        private IMetricsAgentClient _metricsAgentClient;
 
         #endregion
 
         public CpuMetricsController(
-            MetricsAgentClient metricsAgentClient,
+            IMetricsAgentClient metricsAgentClient,
             IHttpClientFactory httpClientFactory,
             AgentPool agentPool)
         {

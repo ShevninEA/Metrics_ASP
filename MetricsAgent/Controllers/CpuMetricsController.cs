@@ -2,6 +2,7 @@
 using MetricsAgent.Models;
 using MetricsAgent.Models.Dto;
 using MetricsAgent.Models.Requests;
+using MetricsAgent.Models.Response;
 using MetricsAgent.Services;
 using MetricsAgent.Services.Impl;
 using Microsoft.AspNetCore.Http;

@@ -7,6 +7,7 @@ using MetricsAgent.Services.Impl;
 using AutoMapper;
 using MetricsAgent.Models.Dto;
 using System.Collections.Generic;
+using MetricsAgent.Models.Response;
 
 namespace MetricsAgent.Controllers
 {
@@ -27,19 +28,23 @@ namespace MetricsAgent.Controllers
         }
 
         ////Более не нужен
-        //[HttpPost("create")]
-        //public IActionResult Create([FromBody] DotnetMetricCreateRequest request)
-        //{
-        //    _logger.LogInformation("Create dotnet metric.");
-        //    _dotnetMetricsRepository.Create(_mapper.Map<DotnetMetric>(request));
-        //    return Ok();
-        //}
+        [HttpPost("create")]
+        public IActionResult Create([FromBody] DotnetMetricCreateRequest request)
+        {
+            _logger.LogInformation("Create dotnet metric.");
+            _dotnetMetricsRepository.Create(_mapper.Map<DotnetMetric>(request));
+            return Ok();
+        }
 
         [HttpGet("from/{fromTime}/to/{toTime}")]
-        public ActionResult<IList<DotnetMetricDto>> GetDotnetMetrics([FromRoute] TimeSpan fromTime, [FromRoute] TimeSpan toTime)
+        public ActionResult<GetDotnetMetricsResponse> GetDotnetMetrics([FromRoute] TimeSpan fromTime, [FromRoute] TimeSpan toTime)
         {
             _logger.LogInformation("Get dotnet metrics call.");
-            return Ok(_mapper.Map<List<DotnetMetricDto>>(_dotnetMetricsRepository.GetByTimePeriod(fromTime, toTime)));
+
+            return Ok(new GetDotnetMetricsResponse
+            {
+                Metrics = _mapper.Map<List<DotnetMetricDto>>(_dotnetMetricsRepository.GetByTimePeriod(fromTime, toTime))
+            });
         }
 
         [HttpGet("getall")]

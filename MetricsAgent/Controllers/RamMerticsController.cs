@@ -7,10 +7,11 @@ using AutoMapper;
 using MetricsAgent.Services.Impl;
 using System.Collections.Generic;
 using MetricsAgent.Models.Dto;
+using MetricsAgent.Models.Response;
 
 namespace MetricsAgent.Controllers
 {
-    [Route(" api/metrics/ram/available")]
+    [Route("api/metrics/ram/available")]
     [ApiController]
     public class RamMetricsController : ControllerBase
     {
@@ -27,19 +28,23 @@ namespace MetricsAgent.Controllers
         }
 
         ////Более не нужен
-        //[HttpPost("create")]
-        //public IActionResult Create([FromBody] RamMetricCreateRequest request)
-        //{
-        //    _logger.LogInformation("Create ram metric.");
-        //    _ramMetricsRepository.Create(_mapper.Map<RamMetric>(request));
-        //    return Ok();
-        //}
+        [HttpPost("create")]
+        public IActionResult Create([FromBody] RamMetricCreateRequest request)
+        {
+            _logger.LogInformation("Create ram metric.");
+            _ramMetricsRepository.Create(_mapper.Map<RamMetric>(request));
+            return Ok();
+        }
 
         [HttpGet("from/{fromTime}/to/{toTime}")]
-        public ActionResult<IList<RamMetricDto>> GetRamMetrics([FromRoute] TimeSpan fromTime, [FromRoute] TimeSpan toTime)
+        public ActionResult<GetRamMetricsResponse> GetRamMetrics([FromRoute] TimeSpan fromTime, [FromRoute] TimeSpan toTime)
         {
             _logger.LogInformation("Get ram metrics call.");
-            return Ok(_mapper.Map<List<RamMetricDto>>(_ramMetricsRepository.GetByTimePeriod(fromTime, toTime)));
+
+            return Ok(new GetRamMetricsResponse
+            {
+                Metrics = _mapper.Map<List<RamMetricDto>>(_ramMetricsRepository.GetByTimePeriod(fromTime, toTime))
+            });
         }
 
         [HttpGet("getall")]
