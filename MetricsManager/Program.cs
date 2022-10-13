@@ -1,6 +1,11 @@
 using MetricsManager.Models;
+using MetricsManager.Services.Client.Impl;
+using MetricsManager.Services.Client;
 using Microsoft.OpenApi.Any;
 using Microsoft.OpenApi.Models;
+using Polly;
+using Microsoft.AspNetCore.HttpLogging;
+using NLog.Web;
 
 namespace MetricsManager
 {
@@ -13,10 +18,42 @@ namespace MetricsManager
 
             // Add services to the container.
 
+            #region Configure logging
+
+            builder.Host.ConfigureLogging(logging =>
+            {
+                logging.ClearProviders();
+                logging.AddConsole();
+
+            }).UseNLog(new NLogAspNetCoreOptions() { RemoveLoggerFactoryFilter = true });
+
+            builder.Services.AddHttpLogging(logging =>
+            {
+                logging.LoggingFields = HttpLoggingFields.All | HttpLoggingFields.RequestQuery;
+                logging.RequestBodyLogLimit = 4096;
+                logging.ResponseBodyLogLimit = 4096;
+                logging.RequestHeaders.Add("Authorization");
+                logging.RequestHeaders.Add("X-Real-IP");
+                logging.RequestHeaders.Add("X-Forwarded-For");
+            });
+
+            #endregion
 
             builder.Services.AddSingleton<AgentPool>();
 
             builder.Services.AddHttpClient();
+
+            builder.Services.AddHttpClient<MetricsAgentClient>()
+                .AddTransientHttpErrorPolicy(p => p.WaitAndRetryAsync(retryCount: 3,
+                sleepDurationProvider: (attemptCount) => TimeSpan.FromSeconds(attemptCount * 2),
+                onRetry: (response, sleepDuration, attemptCount, context) => {
+
+                    var logger = builder.Services.BuildServiceProvider().GetService<ILogger<Program>>();
+                    logger.LogError(response.Exception != null ? response.Exception :
+                        new Exception($"\n{response.Result.StatusCode}: {response.Result.RequestMessage}"),
+                        $"(attempt: {attemptCount}) request exception.");
+                }
+                ));
 
             builder.Services.AddControllers();
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
@@ -44,6 +81,7 @@ namespace MetricsManager
 
             app.UseAuthorization();
 
+            app.UseHttpLogging();
 
             app.MapControllers();
 
