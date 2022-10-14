@@ -1,6 +1,6 @@
 ﻿using MetricsManager.Models.Requests.Cpu;
 
-namespace MetricsManager.Services.Client
+namespace MetricsManager.Services.Client.Impl
 {
     public interface IMetricsAgentClient
     {

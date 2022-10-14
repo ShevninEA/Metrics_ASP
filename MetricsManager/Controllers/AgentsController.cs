@@ -1,4 +1,6 @@
 ﻿using MetricsManager.Models;
+using MetricsManager.Services;
+using MetricsManager.Services.Impl;
 using Microsoft.AspNetCore.Mvc;
 
 namespace MetricsManager.Controllers
@@ -8,10 +10,12 @@ namespace MetricsManager.Controllers
     public class AgentsController : ControllerBase
     {
         private AgentPool _agentPool;
+        private readonly IAgentRepository _agentRepository;
 
-        public AgentsController(AgentPool agentPool)
+        public AgentsController(AgentPool agentPool, IAgentRepository agentRepository)
         {
             _agentPool = agentPool;
+            _agentRepository = agentRepository;
         }
 
         [HttpPost("register")]
@@ -19,9 +23,15 @@ namespace MetricsManager.Controllers
         {
             if (agentInfo != null)
             {
-                _agentPool.Add(agentInfo);
+                _agentRepository.Create(agentInfo);
             }
             return Ok();
+        }
+
+        [HttpGet("getById")]
+        public ActionResult GetAgentById(int id)
+        {
+            return Ok(_agentRepository.GetById(id));
         }
 
         [HttpPut("enable/{agentId}")]
@@ -40,10 +50,17 @@ namespace MetricsManager.Controllers
             return Ok();
         }
 
-        [HttpGet("get")]
-        public IActionResult GetAllAgents()
+        [HttpDelete("delete/{agentId}")]
+        public ActionResult Delete([FromRoute] int agentId)
         {
-            return Ok(_agentPool.Get());
+            _agentRepository.Delete(agentId);
+            return Ok();
+        }
+
+        [HttpGet("getAll")]
+        public ActionResult GetallAgents()
+        {
+            return Ok(_agentRepository.GetAll());
         }
     }
 }

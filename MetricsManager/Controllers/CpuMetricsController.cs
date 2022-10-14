@@ -1,6 +1,6 @@
 ﻿using MetricsManager.Models;
 using MetricsManager.Models.Requests.Cpu;
-using MetricsManager.Services.Client;
+using MetricsManager.Services.Client.Impl;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;

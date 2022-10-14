@@ -57,7 +57,7 @@ namespace MetricsAgent
 
             #endregion
 
-            #region Quartz
+            #region Configure Quartz
 
             builder.Services.AddSingleton<ISchedulerFactory, StdSchedulerFactory>();
             builder.Services.AddSingleton<IJobFactory, SingletonJobFactory>();

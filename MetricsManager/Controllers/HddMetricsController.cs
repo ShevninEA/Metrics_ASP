@@ -1,8 +1,8 @@
 ﻿using MetricsManager.Models.Requests.Cpu;
 using MetricsManager.Models;
-using MetricsManager.Services.Client;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using MetricsManager.Services.Client.Impl;
 
 namespace MetricsManager.Controllers
 {

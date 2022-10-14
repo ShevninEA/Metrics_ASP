@@ -1,11 +1,13 @@
 using MetricsManager.Models;
 using MetricsManager.Services.Client.Impl;
-using MetricsManager.Services.Client;
 using Microsoft.OpenApi.Any;
 using Microsoft.OpenApi.Models;
 using Polly;
 using Microsoft.AspNetCore.HttpLogging;
 using NLog.Web;
+using FluentMigrator.Runner;
+using MetricsManager.Services;
+using MetricsManager.Services.Impl;
 
 namespace MetricsManager
 {
@@ -17,6 +19,30 @@ namespace MetricsManager
             var builder = WebApplication.CreateBuilder(args);
 
             // Add services to the container.
+
+            #region Configure Options
+
+            builder.Services.Configure<DataBaseOptions>(options =>
+            {
+                builder.Configuration.GetSection("Settings:DataBaseOptions").Bind(options);
+            });
+
+            #endregion
+
+            #region Configure Database
+
+            //ConfigureSqlLiteConnection(builder);
+
+            builder.Services.AddSingleton<IAgentRepository, AgentRepository>();
+
+            builder.Services.AddFluentMigratorCore()
+                .ConfigureRunner(rb =>
+                rb.AddSQLite()
+                .WithGlobalConnectionString(builder.Configuration["Settings:DatabaseOptions:ConnectionString"].ToString())
+                .ScanIn(typeof(Program).Assembly).For.Migrations()
+                ).AddLogging(lb => lb.AddFluentMigratorConsole());
+
+            #endregion
 
             #region Configure logging
 
@@ -84,6 +110,13 @@ namespace MetricsManager
             app.UseHttpLogging();
 
             app.MapControllers();
+
+            var serviceScopeFactory = app.Services.GetRequiredService<IServiceScopeFactory>();
+            using (IServiceScope serviceScope = serviceScopeFactory.CreateScope())
+            {
+                var migrationRunner = serviceScope.ServiceProvider.GetRequiredService<IMigrationRunner>();
+                migrationRunner.MigrateUp();
+            }
 
             app.Run();
         }
