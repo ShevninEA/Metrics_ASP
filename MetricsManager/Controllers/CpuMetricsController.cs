@@ -43,35 +43,35 @@ namespace MetricsManager.Controllers
 
         #region GetMetricsFromAgentOld
 
-        //[HttpGet("agent-old/{agentId}/from/{fromTime}/to/{toTime}")]
-        //public ActionResult<CpuMetricsResponse> GetMetricsFromAgentOld(
-        //    [FromRoute] int agentId, [FromRoute] TimeSpan fromTime, [FromRoute] TimeSpan toTime)
-        //{
-        //    AgentInfo agentInfo = _agentPool.Get().FirstOrDefault(agent => agent.AgentId == agentId);
-        //    if (agentInfo == null)
-        //        return BadRequest();
+        [HttpGet("agent-old/{agentId}/from/{fromTime}/to/{toTime}")]
+        public ActionResult<CpuMetricsResponse> GetMetricsFromAgentOld(
+            [FromRoute] int agentId, [FromRoute] TimeSpan fromTime, [FromRoute] TimeSpan toTime)
+        {
+            AgentInfo agentInfo = _agentPool.Get().FirstOrDefault(agent => agent.AgentId == agentId);
+            if (agentInfo == null)
+                return BadRequest();
 
-        //    string requestStr =
-        //        $"{agentInfo.AgentAddress}api/metrics/cpu/from/{fromTime.ToString("dd\\.hh\\:mm\\:ss")}/to/{toTime.ToString("dd\\.hh\\:mm\\:ss")}";
-        //    HttpRequestMessage httpRequestMessage = new HttpRequestMessage(HttpMethod.Get, requestStr);
-        //    httpRequestMessage.Headers.Add("Accept", "application/json");
-        //    HttpClient httpClient = _httpClientFactory.CreateClient();
+            string requestStr =
+                $"{agentInfo.AgentAddress}api/metrics/cpu/from/{fromTime.ToString("dd\\.hh\\:mm\\:ss")}/to/{toTime.ToString("dd\\.hh\\:mm\\:ss")}";
+            HttpRequestMessage httpRequestMessage = new HttpRequestMessage(HttpMethod.Get, requestStr);
+            httpRequestMessage.Headers.Add("Accept", "application/json");
+            HttpClient httpClient = _httpClientFactory.CreateClient();
 
-        //    CancellationTokenSource cancellationTokenSource = new CancellationTokenSource();
-        //    cancellationTokenSource.CancelAfter(3000); // 3 сек
+            CancellationTokenSource cancellationTokenSource = new CancellationTokenSource();
+            cancellationTokenSource.CancelAfter(3000); // 3 сек
 
-        //    HttpResponseMessage response = httpClient.Send(httpRequestMessage, cancellationTokenSource.Token);
+            HttpResponseMessage response = httpClient.Send(httpRequestMessage, cancellationTokenSource.Token);
 
-        //    if (response.IsSuccessStatusCode)
-        //    {
-        //        string responseStr = response.Content.ReadAsStringAsync().Result;
-        //        CpuMetricsResponse cpuMetricsResponse =
-        //            (CpuMetricsResponse)JsonConvert.DeserializeObject(responseStr, typeof(CpuMetricsResponse));
-        //        cpuMetricsResponse.AgentId = agentId;
-        //        return Ok(cpuMetricsResponse);
-        //    }
-        //    return BadRequest();
-        //}
+            if (response.IsSuccessStatusCode)
+            {
+                string responseStr = response.Content.ReadAsStringAsync().Result;
+                CpuMetricsResponse cpuMetricsResponse =
+                    (CpuMetricsResponse)JsonConvert.DeserializeObject(responseStr, typeof(CpuMetricsResponse));
+                cpuMetricsResponse.AgentId = agentId;
+                return Ok(cpuMetricsResponse);
+            }
+            return BadRequest();
+        }
 
         #endregion
 

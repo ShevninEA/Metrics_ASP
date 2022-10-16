@@ -20,6 +20,13 @@ namespace MetricsManager
 
             // Add services to the container.
 
+            builder.Services.AddSingleton<AgentPool>();
+
+            builder.Services.AddHttpClient();
+
+            builder.Services.AddSingleton<IAgentRepository, AgentRepository>();
+
+
             #region Configure Options
 
             builder.Services.Configure<DataBaseOptions>(options =>
@@ -30,10 +37,6 @@ namespace MetricsManager
             #endregion
 
             #region Configure Database
-
-            //ConfigureSqlLiteConnection(builder);
-
-            builder.Services.AddSingleton<IAgentRepository, AgentRepository>();
 
             builder.Services.AddFluentMigratorCore()
                 .ConfigureRunner(rb =>
@@ -65,9 +68,7 @@ namespace MetricsManager
 
             #endregion
 
-            builder.Services.AddSingleton<AgentPool>();
-
-            builder.Services.AddHttpClient();
+            //ConfigureSqlLiteConnection(builder);
 
             builder.Services.AddHttpClient<IMetricsAgentClient, MetricsAgentClient>()
                 .AddTransientHttpErrorPolicy(p => p.WaitAndRetryAsync(retryCount: 3,

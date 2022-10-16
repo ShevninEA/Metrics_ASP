@@ -1,5 +1,6 @@
 ﻿using MetricsManager.Models;
 using MetricsManager.Models.Requests.Cpu;
+using MetricsManager.Services.Impl;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
 using System.Net.Http;
@@ -12,26 +13,28 @@ namespace MetricsManager.Services.Client.Impl
         #region Services
 
         private readonly AgentPool _agentPool;
+        private readonly IAgentRepository _agentRepository;
         private readonly HttpClient _httpClient;
 
         #endregion
 
         public MetricsAgentClient(HttpClient httpClient,
-            AgentPool agentPool)
+            AgentPool agentPool, IAgentRepository agentRepository)
         {
             _httpClient = httpClient;
             _agentPool = agentPool;
+            _agentRepository = agentRepository;
         }
 
         public CpuMetricsResponse GetCpuMetrics(CpuMetricsRequest request)
         {
-            AgentInfo agentInfo = _agentPool.Get().FirstOrDefault(agent => agent.AgentId == request.AgentId);
+            AgentInfo agentInfo = _agentRepository.GetAll().FirstOrDefault(agent => agent.AgentId == request.AgentId);
             if (agentInfo == null)
                 return null;
 
             string requestStr =
-                $"{agentInfo.AgentAddress}api/metrics/cpu/from/{request.FromTime.ToString("dd\\.hh\\:mm\\:ss")}/to/{request.ToTime.ToString("dd\\.hh\\:mm\\:ss")}";
-            HttpRequestMessage httpRequestMessage = new HttpRequestMessage(HttpMethod.Get, requestStr);
+                $"{agentInfo.AgentAddress}api/metrics/CPU/from/{request.FromTime.ToString("dd\\.hh\\:mm\\:ss")}/to/{request.ToTime.ToString("dd\\.hh\\:mm\\:ss")}";
+            HttpRequestMessage httpRequestMessage = new(HttpMethod.Get, requestStr);
             httpRequestMessage.Headers.Add("Accept", "application/json");
             HttpResponseMessage response = _httpClient.Send(httpRequestMessage);
             if (response.IsSuccessStatusCode)
@@ -42,12 +45,13 @@ namespace MetricsManager.Services.Client.Impl
                 cpuMetricsResponse.AgentId = request.AgentId;
                 return cpuMetricsResponse;
             }
+
             return null;
         }
 
         public DotnetMetricsResponse GetDotnetMetrics(DotnetMetricsRequest request)
         {
-            AgentInfo agentInfo = _agentPool.Get().FirstOrDefault(agent => agent.AgentId == request.AgentId);
+            AgentInfo agentInfo = _agentRepository.GetAll().FirstOrDefault(agent => agent.AgentId == request.AgentId);
             if (agentInfo == null)
                 return null;
 
