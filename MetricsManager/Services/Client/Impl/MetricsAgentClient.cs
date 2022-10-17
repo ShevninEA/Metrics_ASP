@@ -12,17 +12,15 @@ namespace MetricsManager.Services.Client.Impl
 
         #region Services
 
-        private readonly AgentPool _agentPool;
         private readonly IAgentRepository _agentRepository;
         private readonly HttpClient _httpClient;
 
         #endregion
 
         public MetricsAgentClient(HttpClient httpClient,
-            AgentPool agentPool, IAgentRepository agentRepository)
+             IAgentRepository agentRepository)
         {
             _httpClient = httpClient;
-            _agentPool = agentPool;
             _agentRepository = agentRepository;
         }
 
@@ -73,7 +71,7 @@ namespace MetricsManager.Services.Client.Impl
 
         public HddMetricsResponse GetHddMetrics(HddMetricsRequest request)
         {
-            AgentInfo agentInfo = _agentPool.Get().FirstOrDefault(agent => agent.AgentId == request.AgentId);
+            AgentInfo agentInfo = _agentRepository.GetAll().FirstOrDefault(agent => agent.AgentId == request.AgentId);
             if (agentInfo == null)
                 return null;
 
@@ -95,7 +93,7 @@ namespace MetricsManager.Services.Client.Impl
 
         public NetworkMetricsResponse GetNetworkMetrics(NetworkMetricsRequest request)
         {
-            AgentInfo agentInfo = _agentPool.Get().FirstOrDefault(agent => agent.AgentId == request.AgentId);
+            AgentInfo agentInfo = _agentRepository.GetAll().FirstOrDefault(agent => agent.AgentId == request.AgentId);
             if (agentInfo == null)
                 return null;
 
@@ -117,7 +115,7 @@ namespace MetricsManager.Services.Client.Impl
 
         public RamMetricsResponse GetRamMetrics(RamMetricsRequest request)
         {
-            AgentInfo agentInfo = _agentPool.Get().FirstOrDefault(agent => agent.AgentId == request.AgentId);
+            AgentInfo agentInfo = _agentRepository.GetAll().FirstOrDefault(agent => agent.AgentId == request.AgentId);
             if (agentInfo == null)
                 return null;
 

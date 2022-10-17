@@ -20,7 +20,7 @@ namespace MetricsManager
 
             // Add services to the container.
 
-            builder.Services.AddSingleton<AgentPool>();
+            //builder.Services.AddSingleton<AgentPool>();
 
             builder.Services.AddHttpClient();
 

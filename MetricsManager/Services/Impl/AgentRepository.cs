@@ -11,10 +11,12 @@ namespace MetricsManager.Services.Impl
     public class AgentRepository : IAgentRepository
     {
         private readonly IOptions<DataBaseOptions> _databaseOptions;
+        private readonly UriTypeHandler _uriTypeHandler;
 
-        public AgentRepository(IOptions<DataBaseOptions> databaseOptions)
+        public AgentRepository(IOptions<DataBaseOptions> databaseOptions, UriTypeHandler uriTypeHandler)
         {
             _databaseOptions = databaseOptions;
+            _uriTypeHandler = uriTypeHandler;
         }
 
         public void Create(AgentInfo item)
@@ -26,7 +28,7 @@ namespace MetricsManager.Services.Impl
                 {
                     AgentId = item.AgentId,
                     AgentAddress = item.AgentAddress,
-                    Enable = item.Enable
+                    Enable = item.Enable,
                 });
         }
 
@@ -47,15 +49,27 @@ namespace MetricsManager.Services.Impl
             return agent;
         }
 
-        public void Update(AgentInfo item)
+        public void Enable(int id)
         {
             using var connection = new SQLiteConnection(_databaseOptions.Value.ConnectionString);
 
-            connection.Execute("UPDATE Agents SET AgentAddress = @AgentAddress, Enable = @Enable WHERE AgentId = @AgentId; ",
+            connection.Execute("UPDATE Agents SET Enable = @Enable WHERE AgentId = @AgentId; ",
                 new
                 {
-                    AgentAddress = item.AgentAddress,
-                    Enable = item.Enable
+                    AgentId = id,
+                    Enable = true
+                });
+        }
+
+        public void Disable(int id)
+        {
+            using var connection = new SQLiteConnection(_databaseOptions.Value.ConnectionString);
+
+            connection.Execute("UPDATE Agents SET Enable = @Enable WHERE AgentId = @AgentId; ",
+                new
+                {
+                    AgentId = id,
+                    Enable = false
                 });
         }
 

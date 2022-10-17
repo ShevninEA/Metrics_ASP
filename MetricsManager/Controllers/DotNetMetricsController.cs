@@ -12,21 +12,15 @@ namespace MetricsManager.Controllers
     {
         #region Services
 
-        private IHttpClientFactory _httpClientFactory;
-        private AgentPool _agentPool;
         private IMetricsAgentClient _metricsAgentClient;
 
         #endregion
 
-        public DotnetMetricsController(
-            IMetricsAgentClient metricsAgentClient,
-            IHttpClientFactory httpClientFactory,
-            AgentPool agentPool)
+        public DotnetMetricsController(IMetricsAgentClient metricsAgentClient)
         {
-            _httpClientFactory = httpClientFactory;
             _metricsAgentClient = metricsAgentClient;
-            _agentPool = agentPool;
         }
+        
 
         [HttpGet("agent/{agentId}/from/{fromTime}/to/{toTime}")]
         public ActionResult<DotnetMetricsResponse> GetMetricsFromAgent(
@@ -40,11 +34,15 @@ namespace MetricsManager.Controllers
             }));
         }
 
-        [HttpGet("all/from/{fromTime}/to/{toTime}")]
-        public IActionResult GetMetricsFromAll(
-            [FromRoute] TimeSpan fromTime, [FromRoute] TimeSpan toTime)
-        {
-            return Ok();
-        }
+        #region Old-cotrollers
+
+        //[HttpGet("all/from/{fromTime}/to/{toTime}")]
+        //public IActionResult GetMetricsFromAll(
+        //    [FromRoute] TimeSpan fromTime, [FromRoute] TimeSpan toTime)
+        //{
+        //    return Ok();
+        //}
+
+        #endregion
     }
 }

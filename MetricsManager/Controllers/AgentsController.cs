@@ -2,6 +2,7 @@
 using MetricsManager.Services;
 using MetricsManager.Services.Impl;
 using Microsoft.AspNetCore.Mvc;
+using System.Reflection;
 
 namespace MetricsManager.Controllers
 {
@@ -9,17 +10,15 @@ namespace MetricsManager.Controllers
     [ApiController]
     public class AgentsController : ControllerBase
     {
-        private AgentPool _agentPool;
         private readonly IAgentRepository _agentRepository;
 
-        public AgentsController(AgentPool agentPool, IAgentRepository agentRepository)
+        public AgentsController(IAgentRepository agentRepository)
         {
-            _agentPool = agentPool;
             _agentRepository = agentRepository;
         }
 
         [HttpPost("register")]
-        public IActionResult RegisterAgent([FromBody] AgentInfo agentInfo)
+        public ActionResult RegisterAgent([FromBody] AgentInfo agentInfo)
         {
             if (agentInfo != null)
             {
@@ -35,18 +34,18 @@ namespace MetricsManager.Controllers
         }
 
         [HttpPut("enable/{agentId}")]
-        public IActionResult EnableAgentById([FromRoute] int agentId)
+        public ActionResult EnableAgentById([FromRoute] int agentId)
         {
-            if (_agentPool.Values.ContainsKey(agentId))
-                _agentPool.Values[agentId].Enable = true;
+            if (_agentRepository != null)
+                _agentRepository.Enable(agentId);
             return Ok();
         }
 
         [HttpPut("disable/{agentId}")]
-        public IActionResult DisableAgentById([FromRoute] int agentId)
+        public ActionResult DisableAgentById([FromRoute] int agentId)
         {
-            if (_agentPool.Values.ContainsKey(agentId))
-                _agentPool.Values[agentId].Enable = false;
+            if (_agentRepository != null)
+                _agentRepository.Disable(agentId);
             return Ok();
         }
 

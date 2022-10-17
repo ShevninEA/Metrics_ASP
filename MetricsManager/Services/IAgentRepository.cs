@@ -2,8 +2,13 @@
 
 namespace MetricsManager.Services
 {
-    public interface IAgentRepository : IRepository<AgentInfo>
+    public interface IAgentRepository
     {
-        void Update(AgentInfo item);
+        IList<AgentInfo> GetAll();
+        AgentInfo GetById(int id);
+        void Create(AgentInfo item);
+        void Delete(int item);
+        void Enable(int item);
+        void Disable(int item);
     }
 }
