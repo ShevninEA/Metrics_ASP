@@ -1,5 +1,8 @@
 ﻿using MetricsManager.Models;
+using MetricsManager.Services;
+using MetricsManager.Services.Impl;
 using Microsoft.AspNetCore.Mvc;
+using System.Reflection;
 
 namespace MetricsManager.Controllers
 {
@@ -7,43 +10,56 @@ namespace MetricsManager.Controllers
     [ApiController]
     public class AgentsController : ControllerBase
     {
-        private AgentPool _agentPool;
+        private readonly IAgentRepository _agentRepository;
 
-        public AgentsController(AgentPool agentPool)
+        public AgentsController(IAgentRepository agentRepository)
         {
-            _agentPool = agentPool;
+            _agentRepository = agentRepository;
         }
 
         [HttpPost("register")]
-        public IActionResult RegisterAgent([FromBody] AgentInfo agentInfo)
+        public ActionResult RegisterAgent([FromBody] AgentInfo agentInfo)
         {
             if (agentInfo != null)
             {
-                _agentPool.Add(agentInfo);
+                _agentRepository.Create(agentInfo);
             }
             return Ok();
         }
 
-        [HttpPut("enable/{agentId}")]
-        public IActionResult EnableAgentById([FromRoute] int agentId)
+        [HttpGet("getById")]
+        public ActionResult GetAgentById(int id)
         {
-            if (_agentPool.Values.ContainsKey(agentId))
-                _agentPool.Values[agentId].Enable = true;
+            return Ok(_agentRepository.GetById(id));
+        }
+
+        [HttpPut("enable/{agentId}")]
+        public ActionResult EnableAgentById([FromRoute] int agentId)
+        {
+            if (_agentRepository != null)
+                _agentRepository.Enable(agentId);
             return Ok();
         }
 
         [HttpPut("disable/{agentId}")]
-        public IActionResult DisableAgentById([FromRoute] int agentId)
+        public ActionResult DisableAgentById([FromRoute] int agentId)
         {
-            if (_agentPool.Values.ContainsKey(agentId))
-                _agentPool.Values[agentId].Enable = false;
+            if (_agentRepository != null)
+                _agentRepository.Disable(agentId);
             return Ok();
         }
 
-        [HttpGet("get")]
-        public IActionResult GetAllAgents()
+        [HttpDelete("delete/{agentId}")]
+        public ActionResult Delete([FromRoute] int agentId)
         {
-            return Ok(_agentPool.Get());
+            _agentRepository.Delete(agentId);
+            return Ok();
+        }
+
+        [HttpGet("getAll")]
+        public ActionResult GetallAgents()
+        {
+            return Ok(_agentRepository.GetAll());
         }
     }
 }

@@ -1,5 +1,8 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using MetricsManager.Models.Requests.Cpu;
+using MetricsManager.Models;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using MetricsManager.Services.Client.Impl;
 
 namespace MetricsManager.Controllers
 {
@@ -7,18 +10,38 @@ namespace MetricsManager.Controllers
     [ApiController]
     public class NetworkMetricsController : ControllerBase
     {
-        [HttpGet("agent/{agentId}/from/{fromTime}/to/{toTime}")]
-        public IActionResult GetMetricsFromAgent(
-            [FromRoute] int agentId, [FromRoute] TimeSpan fromTime, [FromRoute] TimeSpan toTime)
+        #region Services
+
+        private IMetricsAgentClient _metricsAgentClient;
+
+        #endregion
+
+        public NetworkMetricsController(IMetricsAgentClient metricsAgentClient)
         {
-            return Ok();
+            _metricsAgentClient = metricsAgentClient;
         }
 
-        [HttpGet("all/from/{fromTime}/to/{toTime}")]
-        public IActionResult GetMetricsFromAll(
-            [FromRoute] TimeSpan fromTime, [FromRoute] TimeSpan toTime)
+        [HttpGet("agent/{agentId}/from/{fromTime}/to/{toTime}")]
+        public ActionResult<NetworkMetricsResponse> GetMetricsFromAgent(
+            [FromRoute] int agentId, [FromRoute] TimeSpan fromTime, [FromRoute] TimeSpan toTime)
         {
-            return Ok();
+            return Ok(_metricsAgentClient.GetNetworkMetrics(new NetworkMetricsRequest
+            {
+                AgentId = agentId,
+                FromTime = fromTime,
+                ToTime = toTime
+            }));
         }
+
+        #region Old-cotrollers
+
+        //[HttpGet("all/from/{fromTime}/to/{toTime}")]
+        //public IActionResult GetMetricsFromAll(
+        //    [FromRoute] TimeSpan fromTime, [FromRoute] TimeSpan toTime)
+        //{
+        //    return Ok();
+        //}
+
+        #endregion
     }
 }

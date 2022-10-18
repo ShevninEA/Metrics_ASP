@@ -5,6 +5,8 @@ using Microsoft.AspNetCore.Mvc;
 using AutoMapper;
 using MetricsAgent.Models.Dto;
 using System.Collections.Generic;
+using MetricsAgent.Models.Response;
+using MetricsAgent.Services.Impl;
 
 namespace MetricsAgent.Controllers
 {
@@ -25,19 +27,23 @@ namespace MetricsAgent.Controllers
         }
 
         ////Более не нужен
-        //[HttpPost("create")]
-        //public IActionResult Create([FromBody] HddMetricCreateRequest request)
-        //{
-        //    _logger.LogInformation("Create hdd metric.");
-        //    _hddMetricsRepository.Create(_mapper.Map<HddMetric>(request));
-        //    return Ok();
-        //}
+        [HttpPost("create")]
+        public IActionResult Create([FromBody] HddMetricCreateRequest request)
+        {
+            _logger.LogInformation("Create hdd metric.");
+            _hddMetricsRepository.Create(_mapper.Map<HddMetric>(request));
+            return Ok();
+        }
 
         [HttpGet("from/{fromTime}/to/{toTime}")]
-        public ActionResult<IList<HddMetricDto>> GetHddMetrics([FromRoute] TimeSpan fromTime, [FromRoute] TimeSpan toTime)
+        public ActionResult<GetHddMetricsResponse> GetHddMetrics([FromRoute] TimeSpan fromTime, [FromRoute] TimeSpan toTime)
         {
             _logger.LogInformation("Get hdd metrics call.");
-            return Ok(_mapper.Map<List<HddMetricDto>>(_hddMetricsRepository.GetByTimePeriod(fromTime, toTime)));
+
+            return Ok(new GetHddMetricsResponse
+            {
+                Metrics = _mapper.Map<List<HddMetricDto>>(_hddMetricsRepository.GetByTimePeriod(fromTime, toTime))
+            });
         }
 
         [HttpGet("getall")]

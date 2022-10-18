@@ -7,6 +7,7 @@ using AutoMapper;
 using MetricsAgent.Services.Impl;
 using System.Collections.Generic;
 using MetricsAgent.Models.Dto;
+using MetricsAgent.Models.Response;
 
 namespace MetricsAgent.Controllers
 {
@@ -27,19 +28,23 @@ namespace MetricsAgent.Controllers
         }
 
         ////Более не нужен
-        //[HttpPost("create")]
-        //public IActionResult Create([FromBody] NetworkMetricCreateRequest request)
-        //{
-        //    _logger.LogInformation("Create network metric.");
-        //    _networkMetricsRepository.Create(_mapper.Map<NetworkMetric>(request));
-        //    return Ok();
-        //}
+        [HttpPost("create")]
+        public IActionResult Create([FromBody] NetworkMetricCreateRequest request)
+        {
+            _logger.LogInformation("Create network metric.");
+            _networkMetricsRepository.Create(_mapper.Map<NetworkMetric>(request));
+            return Ok();
+        }
 
         [HttpGet("from/{fromTime}/to/{toTime}")]
-        public ActionResult<IList<NetworkMetricDto>> GetNetworkMetrics([FromRoute] TimeSpan fromTime, [FromRoute] TimeSpan toTime)
+        public ActionResult<GetNetworkMetricsResponse> GetNetworkMetrics([FromRoute] TimeSpan fromTime, [FromRoute] TimeSpan toTime)
         {
             _logger.LogInformation("Get network metrics call.");
-            return Ok(_mapper.Map <List<NetworkMetricDto>>(_networkMetricsRepository.GetByTimePeriod(fromTime, toTime)));
+
+            return Ok(new GetNetworkMetricsResponse
+            {
+                Metrics = _mapper.Map<List<NetworkMetricDto>>(_networkMetricsRepository.GetByTimePeriod(fromTime, toTime))
+            });
         }
 
         [HttpGet("getall")]
