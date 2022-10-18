@@ -27,13 +27,13 @@ namespace MetricsAgent.Controllers
         }
 
         ////Более не нужен
-        [HttpPost("create")]
-        public IActionResult Create([FromBody] HddMetricCreateRequest request)
-        {
-            _logger.LogInformation("Create hdd metric.");
-            _hddMetricsRepository.Create(_mapper.Map<HddMetric>(request));
-            return Ok();
-        }
+        //[HttpPost("create")]
+        //public IActionResult Create([FromBody] HddMetricCreateRequest request)
+        //{
+        //    _logger.LogInformation("Create hdd metric.");
+        //    _hddMetricsRepository.Create(_mapper.Map<HddMetric>(request));
+        //    return Ok();
+        //}
 
         [HttpGet("from/{fromTime}/to/{toTime}")]
         public ActionResult<GetHddMetricsResponse> GetHddMetrics([FromRoute] TimeSpan fromTime, [FromRoute] TimeSpan toTime)

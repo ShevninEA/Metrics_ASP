@@ -29,13 +29,13 @@ namespace MetricsAgent.Controllers
         }
 
         ////Более не нужен
-        [HttpPost("create")]
-        public IActionResult Create([FromBody] CpuMetricCreateRequest request)
-        {
-            _logger.LogInformation("Create cpu metric.");
-            _cpuMetricsRepository.Create(_mapper.Map<CpuMetric>(request));
-            return Ok();
-        }
+        //[HttpPost("create")]
+        //public IActionResult Create([FromBody] CpuMetricCreateRequest request)
+        //{
+        //    _logger.LogInformation("Create cpu metric.");
+        //    _cpuMetricsRepository.Create(_mapper.Map<CpuMetric>(request));
+        //    return Ok();
+        //}
 
         [HttpGet("from/{fromTime}/to/{toTime}")]
         public ActionResult<GetCpuMetricsResponse> GetCpuMetrics(

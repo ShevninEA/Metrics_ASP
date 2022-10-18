@@ -8,6 +8,7 @@ using NLog.Web;
 using FluentMigrator.Runner;
 using MetricsManager.Services;
 using MetricsManager.Services.Impl;
+using Dapper;
 
 namespace MetricsManager
 {
