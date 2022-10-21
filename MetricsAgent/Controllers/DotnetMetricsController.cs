@@ -28,13 +28,13 @@ namespace MetricsAgent.Controllers
         }
 
         ////Более не нужен
-        [HttpPost("create")]
-        public IActionResult Create([FromBody] DotnetMetricCreateRequest request)
-        {
-            _logger.LogInformation("Create dotnet metric.");
-            _dotnetMetricsRepository.Create(_mapper.Map<DotnetMetric>(request));
-            return Ok();
-        }
+        //[HttpPost("create")]
+        //public IActionResult Create([FromBody] DotnetMetricCreateRequest request)
+        //{
+        //    _logger.LogInformation("Create dotnet metric.");
+        //    _dotnetMetricsRepository.Create(_mapper.Map<DotnetMetric>(request));
+        //    return Ok();
+        //}
 
         [HttpGet("from/{fromTime}/to/{toTime}")]
         public ActionResult<GetDotnetMetricsResponse> GetDotnetMetrics([FromRoute] TimeSpan fromTime, [FromRoute] TimeSpan toTime)

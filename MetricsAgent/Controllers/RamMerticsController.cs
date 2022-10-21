@@ -28,13 +28,13 @@ namespace MetricsAgent.Controllers
         }
 
         ////Более не нужен
-        [HttpPost("create")]
-        public IActionResult Create([FromBody] RamMetricCreateRequest request)
-        {
-            _logger.LogInformation("Create ram metric.");
-            _ramMetricsRepository.Create(_mapper.Map<RamMetric>(request));
-            return Ok();
-        }
+        //[HttpPost("create")]
+        //public IActionResult Create([FromBody] RamMetricCreateRequest request)
+        //{
+        //    _logger.LogInformation("Create ram metric.");
+        //    _ramMetricsRepository.Create(_mapper.Map<RamMetric>(request));
+        //    return Ok();
+        //}
 
         [HttpGet("from/{fromTime}/to/{toTime}")]
         public ActionResult<GetRamMetricsResponse> GetRamMetrics([FromRoute] TimeSpan fromTime, [FromRoute] TimeSpan toTime)

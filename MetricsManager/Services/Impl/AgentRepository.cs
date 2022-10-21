@@ -11,12 +11,12 @@ namespace MetricsManager.Services.Impl
     public class AgentRepository : IAgentRepository
     {
         private readonly IOptions<DataBaseOptions> _databaseOptions;
-        private readonly UriTypeHandler _uriTypeHandler;
+        //private readonly UriTypeHandler _uriTypeHandler;
 
-        public AgentRepository(IOptions<DataBaseOptions> databaseOptions, UriTypeHandler uriTypeHandler)
+        public AgentRepository(IOptions<DataBaseOptions> databaseOptions/*, UriTypeHandler uriTypeHandler*/)
         {
             _databaseOptions = databaseOptions;
-            _uriTypeHandler = uriTypeHandler;
+            //_uriTypeHandler = uriTypeHandler;
         }
 
         public void Create(AgentInfo item)
@@ -27,7 +27,7 @@ namespace MetricsManager.Services.Impl
                 new
                 {
                     AgentId = item.AgentId,
-                    AgentAddress = item.AgentAddress,
+                    AgentAddress = item.AgentAddress.ToString(),
                     Enable = item.Enable,
                 });
         }
