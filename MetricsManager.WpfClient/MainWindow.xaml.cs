@@ -24,5 +24,10 @@ namespace MetricsManager.WpfClient
         {
             InitializeComponent();
         }
+
+        private void CpuChart_Loaded(object sender, RoutedEventArgs e)
+        {
+
+        }
     }
 }

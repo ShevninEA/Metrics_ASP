@@ -1,5 +1,5 @@
 ﻿<UserControl x:Class="MetricsManager.WpfClient.CpuChart"
-             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
@@ -54,41 +54,10 @@
                 <RowDefinition Height=".5*"></RowDefinition>
             </Grid.RowDefinitions>
             <Border x:Name="Border2" Grid.Row="0" Grid.RowSpan="4"
-                CornerRadius="5" Background="#FFFDEEEE" />
-            <Border Grid.Row="0" Grid.RowSpan="3" Background="#FF383636"></Border>
-            <TextBlock Grid.Row="0" TextAlignment="Center" Padding="10, 10, 0, 5" Foreground="White" FontSize="18" Text="Cpu Load" />
-            <Button Grid.Row="2" Width="40" Height="40"
-                VerticalAlignment="Bottom"
-                HorizontalAlignment="Right" Margin="0,0,20,136"
-                Panel.ZIndex="1"
-                 Grid.RowSpan="2" Click="UpdateOnСlick">
-                <Button.Template>
-                    <ControlTemplate TargetType="Button">
-                        <Grid>
-                            <Grid.Effect>
-                                <DropShadowEffect
-                                    BlurRadius="15"
-                                    Direction="-90"
-                                    RenderingBias="Quality"
-                                    Opacity=".2"
-                                    ShadowDepth="1"/>
-                            </Grid.Effect>
-                            <Ellipse
-                                Stroke="Black"
-                                StrokeThickness="0"
-                                Fill="#FFCD2156">
-                            </Ellipse>
-                            <Path Width="20" Height="20" Stretch="Fill"
-                                Fill="White" Data="F1 M 58,33.5001L 58,27L 49,19L 40,27.5001L 40,33.5001L
-                                46,28.2097L 46,40.5C 46,46.299 41.299,51 35.5,51C 29.701,51 25,46.299 25,40.5C
-                                25,34.8686 29.4332,30.2727 35,30.0117L 35,24.0074C 26.1186,24.2718 19,31.5546
-                                19,40.5C 19,49.6127 26.3873,57 35.5,57C 44.6127,57 52,49.6127 52,40.5L
-                                52,28.125L 58,33.5001 Z "/>
-                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
-                        </Grid>
-                    </ControlTemplate>
-                </Button.Template>
-            </Button>
+                CornerRadius="5" Background="#FFE2D9D9" >
+            </Border>
+            <Border Grid.Row="0" Grid.RowSpan="3" Background="#FF6B6D73"/>
+            <TextBlock Grid.Row="0" TextAlignment="Center" Padding="10, 10, 0, 5" Foreground="White" FontSize="18" Text="Load" />
             <lvc:CartesianChart Name="TimePowerChart" Grid.Row="2" Margin="10, 0, 10, 20" Hoverable="True" DataTooltip="{x:Null}" Series="{Binding ColumnSeriesValues}">
             </lvc:CartesianChart>
             <StackPanel Grid.Row="3" VerticalAlignment="Center" Margin="25, 0">
@@ -98,6 +67,11 @@
                     <TextBlock Foreground="#303030" FontSize="18" VerticalAlignment="Bottom" Margin="8, 6">%</TextBlock>
                 </StackPanel>
             </StackPanel>
+            <Button Content="Dontet" HorizontalAlignment="Left" Height="28" Margin="106,18,0,0" Grid.Row="3" VerticalAlignment="Top" Width="74" Click="UpdateOnСlickDotnet" FontFamily="Candara Light" FontSize="14"/>
+            <Button Content="Hdd" Margin="197,18,0,0" Grid.Row="3" Click="UpdateOnСlickHdd" HorizontalAlignment="Left" Width="75" Height="28" VerticalAlignment="Top" FontFamily="Candara Light" FontSize="14"/>
+            <Button Content="Ram" Margin="380,18,0,0" Grid.Row="3" Click="UpdateOnСlickRam" Height="28" VerticalAlignment="Top" HorizontalAlignment="Left" Width="74" FontFamily="Candara Light" FontSize="14"/>
+            <Button Content="Network" Margin="288,18,0,0" Grid.Row="3" Click="UpdateOnСlickNetwork" Height="28" VerticalAlignment="Top" HorizontalAlignment="Left" Width="76" FontFamily="Candara Light" FontSize="14"/>
+            <Button Content="Cpu" HorizontalAlignment="Left" Height="28" Margin="14,18,0,0" Grid.Row="3" VerticalAlignment="Top" Width="76" Click="UpdateOnСlickCpu" FontFamily="Calibri Light" FontSize="14"/>
         </Grid>
     </Grid>
 </UserControl>

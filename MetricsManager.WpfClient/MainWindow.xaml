@@ -5,12 +5,12 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:MetricsManager.WpfClient"
         mc:Ignorable="d"
-        Title="Metrics" Height="450" Width="800" WindowStartupLocation="CenterScreen">
+        Title="Metrics" Height="450" Width="466" WindowStartupLocation="CenterScreen">
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="37*"/>
             <ColumnDefinition Width="763*"/>
         </Grid.ColumnDefinitions>
-        <local:CpuChart Margin="17,11,22,0" VerticalAlignment="Top" Height="395" Grid.ColumnSpan="2"/>
+        <local:CpuChart Grid.ColumnSpan="2" Loaded="CpuChart_Loaded"/>
     </Grid>
 </Window>

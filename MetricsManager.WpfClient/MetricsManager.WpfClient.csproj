@@ -8,12 +8,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <OpenApiReference Include="OpenAPIs\swagger1.json" CodeGenerator="NSwagCSharp" Namespace="MetricsManagerReference" ClassName="MetricsManagerClient">
-      <SourceUri>http://localhost:5092/swagger/v1/swagger.json</SourceUri>
-    </OpenApiReference>
-  </ItemGroup>
-
-  <ItemGroup>
     <PackageReference Include="LiveCharts.Wpf" Version="0.9.7" />
     <PackageReference Include="Microsoft.Extensions.ApiDescription.Client" Version="3.0.0">
       <PrivateAssets>all</PrivateAssets>
@@ -27,7 +21,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <None Update="OpenAPIs\swagger.json" ClassName="MetricManagerClient" />
+    <ProjectReference Include="..\MetricsManager.Client\MetricsManager.Client.csproj" />
   </ItemGroup>
 
 </Project>
